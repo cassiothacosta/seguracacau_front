@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import Router from 'next/router'
 import useSWR from 'swr'
+import { useState } from 'react'
 
 const apiLink = process.env.BACKEND_API
 

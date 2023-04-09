@@ -4,7 +4,7 @@ import Header from './header'
 const Layout = (props: any) => (
   <>
     <Head>
-      <title>With Cookies</title>
+      <title>Pagina Inicial</title>
     </Head>
 
     <Header />
@@ -21,7 +21,6 @@ const Layout = (props: any) => (
       }
       body {
         margin: 0;
-        color: #333;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
           'Helvetica Neue', Arial, Noto Sans, sans-serif, 'Apple Color Emoji',
           'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
