@@ -1,0 +1,13 @@
+
+version: '3.8'
+services:
+  client:
+    build: .
+    volumes:
+      - .:/app/static
+    ports:
+      - "3002:3002"
+    deploy:
+      replicas: 1
+
+
