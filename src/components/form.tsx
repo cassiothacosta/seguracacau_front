@@ -3,16 +3,16 @@ import Link from 'next/link'
 const Form = ({ isLogin, errorMessage, onSubmit }: any) => (
   <form onSubmit={onSubmit}>
     <label>
-      <span>Username</span>
+      <span>Usuário</span>
       <input type="text" name="username" required />
     </label>
     <label>
-      <span>Password</span>
+      <span>Senha</span>
       <input type="password" name="password" required />
     </label>
     {!isLogin && (
       <label>
-        <span>Repeat password</span>
+        <span>Repetir senha</span>
         <input type="password" name="rpassword" required />
       </label>
     )}
@@ -21,16 +21,16 @@ const Form = ({ isLogin, errorMessage, onSubmit }: any) => (
       {isLogin ? (
         <>
           <Link href="/signup" legacyBehavior>
-            <a>I don`&apos;`t have an account</a>
+            <a>Não tenho uma conta</a>
           </Link>
-          <button type="submit">Login</button>
+          <button type="submit">Entrar</button>
         </>
       ) : (
         <>
           <Link href="/login" legacyBehavior>
-            <a>I already have an account</a>
+            <a>Já tenho uma conta</a>
           </Link>
-          <button type="submit">Signup</button>
+          <button type="submit">Cadastrar</button>
         </>
       )}
     </div>
@@ -64,7 +64,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }: any) => (
       .submit > button {
         padding: 0.5rem 1rem;
         cursor: pointer;
-        background: #fff;
+      
         border: 1px solid #ccc;
         border-radius: 4px;
       }

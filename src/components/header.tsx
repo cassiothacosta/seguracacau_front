@@ -15,11 +15,7 @@ const Header = () => {
           </li>
           {user ? (
             <>
-              <li>
-                <Link href="/profile" legacyBehavior>
-                  Profile
-                </Link>
-              </li>
+              
               <li>
                 <Link href= "http://localhost:3000/api/logout" legacyBehavior>
                  Logout

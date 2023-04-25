@@ -26,7 +26,7 @@ const Layout = (props: any) => (
           'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
       }
       .container {
-        max-width: 42rem;
+        max-width: 100%;
         margin: 0 auto;
         padding: 2rem 1.25rem;
       }
