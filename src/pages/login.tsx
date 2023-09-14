@@ -31,7 +31,7 @@ const Login = () => {
         credentials: 'include'
       })
       if (res.status === 200) {
-        Router.push('/')
+
       } else {
         throw new Error(await res.text())
       }
@@ -46,7 +46,6 @@ const Login = () => {
       <div className="login">
         <Form isLogin errorMessage={errorMsg} onSubmit={handleSubmit} />
       </div>
-     
     </Layout>
   )
 }

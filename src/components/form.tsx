@@ -7,16 +7,22 @@ import {
   Input,
   Row,
   Container,
+  Modal,
 } from '@nextui-org/react';
+import React from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 
-
-const Form = ({ isLogin, errorMessage, onSubmit }: any) => (
+const notify = (errorMessage: any) => toast.error(errorMessage);
+const notifySuccess = (errorMessage: any) => toast.success(errorMessage);
+const Form = ({ isLogin, errorMessage, successMessage, onSubmit }: any) => (
+  
   <form onSubmit={onSubmit}>
     <Container
       display="flex"
       alignItems="center"
       justify="center"
-      css={{ minHeight: '100vh' }}
+      css={{ minHeight: '90vh' }}
     >
       <Card css={{ mw: '420px', p: '20px' }}>
         <Text
@@ -27,7 +33,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }: any) => (
             mb: '20px',
           }}
         >
-          Entrar
+          {isLogin ? "Entrar" : "Cadastrar"}
         </Text>
 
         <Input placeholder="Usuário" type="text" name="username" required />
@@ -50,7 +56,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }: any) => (
                 </Link>
               </Row>
               <Spacer y={1} />
-              <Button type="submit">Entrar</Button>
+              <Button type="submit">Enviar</Button>
             </>
           ) : (
             <>
@@ -60,15 +66,16 @@ const Form = ({ isLogin, errorMessage, onSubmit }: any) => (
                 </Link>
               </Row>
               <Spacer y={1} />
-              <Button type="submit">Cadastrar</Button>
+              <Button type="submit">Enviar</Button>
             </>
           )}
         </div>
       </Card>
 
-
-      {errorMessage && <p className="error">{errorMessage}</p>}
-    </Container>
+      <ToastContainer />
+   
+      </Container>   {errorMessage && <p hidden>{notify(errorMessage)}</p>}
+      {successMessage && <p hidden>{notifySuccess(successMessage)}</p>}
 
 
   </form>

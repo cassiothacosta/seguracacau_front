@@ -8,11 +8,6 @@ const Header = () => {
     <header>
       <nav>
         <ul>
-          <li>
-            <Link href="/" legacyBehavior>
-              Home
-            </Link>
-          </li>
           {user ? (
             <>
               
