@@ -1,29 +1,43 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Input, Modal, Button, Dropdown } from '@nextui-org/react'
 import { Grid, Card, Text } from "@nextui-org/react";
-import { NumberFormatBase } from 'react-number-format';
-import React from 'react';
+import { NumericFormat } from 'react-number-format';
+import React, {useState} from 'react';
 
 
 
 
 export default function formRegister({ errorMessage, onSubmit }: any) {
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [selectedType, setSelectedType] = React.useState(new Set(["Selecione um tipo"]));
+  const formatter = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+  });
+
+  const [selectedType, setSelectedType] = useState(new Set(["despesa"]));
+
   React.useMemo(
     () => Array.from(selectedType).join(", ").replaceAll("_", " "),
     [selectedType]
   );
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [selectedValue, setSelectedValue] = React.useState(new Set(["Selecione um Periodo"]));
+  const [selectedValue, setSelectedValue] = React.useState(new Set(["esporadico"]));
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   React.useMemo(
     () => Array.from(selectedValue).join(", ").replaceAll("_", " "),
     [selectedValue]
+  );
+
+  const [selectedCategory, setSelectedCategory] = React.useState(new Set(["casa"]));
+
+
+  React.useMemo(
+    () => Array.from(selectedCategory).join(", ").replaceAll("_", " "),
+    [selectedCategory]
   );
 
 
@@ -45,46 +59,75 @@ export default function formRegister({ errorMessage, onSubmit }: any) {
             required
           />
         </Grid>
-        <Grid xs={10}>
+        <Grid css={{
+          paddingBottom: "1px"
+        }} sm={10}><Text>Selecione um tipo</Text></Grid>
+        <Grid css={{
+          paddingTop: "1px"
+        }} xs={10}>
+
           <Dropdown>
             <Dropdown.Button flat color="secondary" name="type" css={{ tt: "capitalize" }}>
               {selectedType}
+            </Dropdown.Button>
+
+            <Dropdown.Menu
+              aria-label="Single selection example"
+              color="secondary"
+              disallowEmptySelection
+              selectionMode="single"
+              selectedKeys={selectedType}
+              onSelectionChange={setSelectedType as any}
+            >
+              <Dropdown.Item key="despesa">
+                Despesa
+              </Dropdown.Item>
+              <Dropdown.Item key="fundo">
+                Fundo
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </Grid>
+        <Grid css={{
+          paddingBottom: "1px"
+        }} sm={10}><Text>Selecione uma categoria</Text></Grid>
+        <Grid css={{
+          paddingTop: "1px"
+        }} xs={10}>
+          <Dropdown>
+            <Dropdown.Button flat color="secondary" name="category" css={{ tt: "capitalize" }}>
+              {selectedCategory}
             </Dropdown.Button>
             <Dropdown.Menu
               aria-label="Single selection actions"
               color="secondary"
               disallowEmptySelection={true}
               selectionMode="single"
-              selectedKeys={selectedType}
-              defaultSelectedKeys="Selecione um tipo"
-              
-              onSelectionChange={setSelectedType}
+              selectedKeys={selectedCategory}
+              onSelectionChange={setSelectedCategory as any}
             >
-              <Dropdown.Item key="fundo">
-                Fundo
+              <Dropdown.Item key="casa">
+                Casa
               </Dropdown.Item>
-              <Dropdown.Item key="despesa">
-                Despesa
+              <Dropdown.Item key="compras">
+                Compras
               </Dropdown.Item>
-
+              <Dropdown.Item key="telefone">
+                Telefone
+              </Dropdown.Item>
+              <Dropdown.Item key="ferias">
+                Férias
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </Grid>
-        <Grid xs={10}>
-          <Input
-            aria-label='Categoria'
-            clearable
-            bordered
-            fullWidth
-            color="primary"
-            size="md"
-            type="text" name="category" required
-            placeholder="Categoria"
-
-          />
-        </Grid>
-        <Grid xs={10}>
-        <Dropdown>
+        <Grid css={{
+          paddingBottom: "1px"
+        }} sm={10}><Text>Selecione um Período</Text></Grid>
+        <Grid css={{
+          paddingTop: "1px"
+        }} xs={10}>
+          <Dropdown>
             <Dropdown.Button flat color="secondary" name="period" css={{ tt: "capitalize" }}>
               {selectedValue}
             </Dropdown.Button>
@@ -94,15 +137,15 @@ export default function formRegister({ errorMessage, onSubmit }: any) {
               disallowEmptySelection={true}
               selectionMode="single"
               selectedKeys={selectedValue}
-              onSelectionChange={setSelectedValue}
+              onSelectionChange={setSelectedValue as any}
             >
-              <Dropdown.Item key="Esporadico">
+              <Dropdown.Item key="esporadico">
                 Esporadico
               </Dropdown.Item>
-              <Dropdown.Item key="Mensal">
+              <Dropdown.Item key="mensal">
                 Mensal
               </Dropdown.Item>
-              <Dropdown.Item key="Anual">
+              <Dropdown.Item key="anual">
                 Anual
               </Dropdown.Item>
             </Dropdown.Menu>
@@ -110,14 +153,15 @@ export default function formRegister({ errorMessage, onSubmit }: any) {
         </Grid>
         <Grid xs={10}>
           <Input
-            aria-label='a'
+            aria-label='Valor'
             clearable
             bordered
             fullWidth
             color="primary"
             size="md"
-            type="float" name="value" required
+            type="number" name="value" required
             placeholder="Valor"
+            labelLeft="R$"
           />
         </Grid>
       </Grid.Container>

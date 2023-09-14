@@ -29,6 +29,9 @@ const Layout = (props: any) => (
         max-width: 100%;
         margin: 0 auto;
         padding: 2rem 1.25rem;
+      } 
+      tr{
+        height: 20px
       }
     `}</style>
   </>

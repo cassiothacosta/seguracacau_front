@@ -46,7 +46,7 @@ const Registers = (props: any) => {
       username: props.username,
       name: e.currentTarget.name.value,
       type: e.currentTarget.type.lastElementChild.innerText,
-      category: e.currentTarget.category.value,
+      category: e.currentTarget.category.lastElementChild.innerText,
       period: e.currentTarget.period.lastElementChild.innerText,
       value: e.currentTarget.value.value,
     }

@@ -6,13 +6,13 @@ import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Tooltip } from 'recha
 
 const apiLink = process.env.BACKEND_API
 
-const RegistersByType = (props: any) => {
+const RegistersByCategory = (props: any) => {
 
   const [data, setRegistros] = useState([])
 
   useEffect(() => {
     async function carregaRegistros() {
-      const res = await fetch(apiLink + '/api/getRegistersGroupByType', {
+      const res = await fetch(apiLink + '/api/getRegistersGroupByCategory', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: props.username }),
@@ -43,7 +43,7 @@ const RegistersByType = (props: any) => {
   return (
     <>
       {data[0] && (
-        <ResponsiveContainer width="100%" height="100%" >
+        <ResponsiveContainer width="100%" height="100%">
           <PieChart width={400} height={400}>
             <Pie
               data={data}
@@ -59,7 +59,7 @@ const RegistersByType = (props: any) => {
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
-            <Tooltip/>
+            <Tooltip />
           </PieChart>
         </ResponsiveContainer>
       )
@@ -91,4 +91,4 @@ export async function getRegistersGroupByCategory({ data }: any) {
 
 }
 
-export default RegistersByType
+export default RegistersByCategory
