@@ -31,7 +31,7 @@ const Login = () => {
         credentials: 'include'
       })
       if (res.status === 200) {
-
+        Router.push('/')
       } else {
         throw new Error(await res.text())
       }

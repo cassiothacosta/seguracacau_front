@@ -8,10 +8,19 @@ const Layout = (props: any) => (
     </Head>
 
     <Header />
-
-    <main>
+{props.children.props ? 
+  <main>
       <div className="container">{props.children}</div>
-    </main>
+  </main>
+    
+:
+
+<main>
+  <div className="container">{props.children}</div>
+</main>
+
+}
+
 
     <style jsx global>{`
       *,
