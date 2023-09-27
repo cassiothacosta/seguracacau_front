@@ -1,25 +1,22 @@
 import Head from 'next/head'
 import Header from './header'
+import { Container } from '@nextui-org/react'
 
 const Layout = (props: any) => (
   <>
     <Head>
-      <title>Pagina Inicial</title>
+      <title>Segura Cacau - Home</title>
     </Head>
 
     <Header />
-{props.children.props ? 
-  <main>
-      <div className="container">{props.children}</div>
-  </main>
-    
-:
 
-<main>
-  <div className="container">{props.children}</div>
-</main>
+    {props.children && (
+      
+        <Container gap={0}> {props.children}</Container>
 
-}
+    )
+
+    }
 
 
     <style jsx global>{`
@@ -29,6 +26,7 @@ const Layout = (props: any) => (
         box-sizing: border-box;
       }
       body {
+        
         margin: 0;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
           'Helvetica Neue', Arial, Noto Sans, sans-serif, 'Apple Color Emoji',

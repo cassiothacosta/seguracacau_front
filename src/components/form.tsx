@@ -36,14 +36,14 @@ const Form = ({ isLogin, errorMessage, successMessage, onSubmit }: any) => (
           {isLogin ? "Entrar" : "Cadastrar"}
         </Text>
 
-        <Input placeholder="Usuário" type="text" name="username" required />
+        <Input placeholder="Usuário" aria-label="username" type="text" name="username" required />
         <Spacer y={1} />
-        <Input placeholder="Senha" type="password" name="password" required />
+        <Input placeholder="Senha" aria-label="password" type="password" name="password" required />
         <Spacer y={1} />
         {!isLogin && (
 
 
-          <Input placeholder="Repetir Senha" type="password" name="rpassword" required />
+          <Input placeholder="Repetir Senha" aria-label="rpassword" type="password" name="rpassword" required />
 
         )}
         <Spacer y={1} />

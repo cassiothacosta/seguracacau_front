@@ -2,17 +2,17 @@ import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
 import { Container, Row, Col, Grid, Text, Spacer } from '@nextui-org/react';
 import Registers from '../components/register'
-import PieChart from '../components/pieChart'
 import RegistersByType from '../components/registerByType';
 import RegistersByCategory from '../components/registerByCategory'
+import Login from './login';
 
 export default function Home() {
 
   const user = useUser()
 
   return (
-    <Layout>
-      {user && (
+    <Layout >
+      {user ? (
         <Container gap={0}>
           <Row gap={0}>
             <Col>
@@ -20,7 +20,7 @@ export default function Home() {
             </Col>
           </Row>
 
-      <Spacer y={1} />
+          <Spacer y={1} />
           <Row gap={0}>
             <Col>
               <Grid xs={12} css={{
@@ -40,7 +40,13 @@ export default function Home() {
             </Col>
           </Row>
         </Container>
-      )}
+      ) :
+        <Container gap={0}>
+          <Login />
+        </Container>
+
+
+      }
       <style jsx>{`
           li {
             margin-bottom: 0.5rem;

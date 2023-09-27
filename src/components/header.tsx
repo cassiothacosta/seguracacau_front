@@ -8,7 +8,7 @@ const Header = () => {
     <header>
       <nav>
         <ul>
-          {user ? (
+          {user && (
             <>
               
               <li>
@@ -17,12 +17,6 @@ const Header = () => {
                 </Link>
               </li>
             </>
-          ) : (
-            <li>
-              <Link href="/login" legacyBehavior>
-                Login
-              </Link>
-            </li>
           )}
         </ul>
       </nav>
@@ -44,14 +38,8 @@ const Header = () => {
         li:first-child {
           margin-left: auto;
         }
-        a {
-          color: #fff;
-          text-decoration: none;
-        }
-        header {
-          color: #fff;
-          background-color: #333;
-        }
+
+      
       `}</style>
     </header>
   )
