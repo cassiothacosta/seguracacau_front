@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { useUser } from '../lib/hooks'
+import { ThemeSwitcher } from './ThemeSwitcher'
 
 const Header = () => {
   const user = useUser()
@@ -8,39 +9,18 @@ const Header = () => {
     <header>
       <nav>
         <ul>
-          {user && (
-            <>
-              
+          {user && (            
               <li>
                 <Link href= "http://localhost:3000/api/logout" legacyBehavior>
                  Logout
                 </Link>
               </li>
-            </>
           )}
+          <li>
+            <ThemeSwitcher/>
+          </li>
         </ul>
       </nav>
-      <style jsx>{`
-        nav {
-          max-width: 42rem;
-          margin: 0 auto;
-          padding: 0.2rem 1.25rem;
-        }
-        ul {
-          display: flex;
-          list-style: none;
-          margin-left: 0;
-          padding-left: 0;
-        }
-        li {
-          margin-right: 1rem;
-        }
-        li:first-child {
-          margin-left: auto;
-        }
-
-      
-      `}</style>
     </header>
   )
 }

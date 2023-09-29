@@ -3,10 +3,7 @@ import {
   Card,
   Spacer,
   Button,
-  Text,
   Input,
-  Row,
-  Container,
   Modal,
 } from '@nextui-org/react';
 import React from 'react';
@@ -18,23 +15,11 @@ const notifySuccess = (errorMessage: any) => toast.success(errorMessage);
 const Form = ({ isLogin, errorMessage, successMessage, onSubmit }: any) => (
   
   <form onSubmit={onSubmit}>
-    <Container
-      display="flex"
-      alignItems="center"
-      justify="center"
-      css={{ minHeight: '90vh' }}
-    >
-      <Card css={{ mw: '420px', p: '20px' }}>
-        <Text
-          size={24}
-          weight="bold"
-          css={{
-            as: 'center',
-            mb: '20px',
-          }}
-        >
+    <div>
+      <Card className="max-w-[400px]">
+       
           {isLogin ? "Entrar" : "Cadastrar"}
-        </Text>
+ 
 
         <Input placeholder="Usuário" aria-label="username" type="text" name="username" required />
         <Spacer y={1} />
@@ -50,21 +35,21 @@ const Form = ({ isLogin, errorMessage, successMessage, onSubmit }: any) => (
         <div className="submit">
           {isLogin ? (
             <>
-              <Row>
+              <div>
                 <Link href="/signup" legacyBehavior>
                   <a>Não tenho uma conta</a>
                 </Link>
-              </Row>
+              </div>
               <Spacer y={1} />
               <Button type="submit">Enviar</Button>
             </>
           ) : (
             <>
-              <Row>
+              <div>
                 <Link href="/login" legacyBehavior>
                   <a>Já tenho uma conta</a>
                 </Link>
-              </Row>
+              </div>
               <Spacer y={1} />
               <Button type="submit">Enviar</Button>
             </>
@@ -74,7 +59,7 @@ const Form = ({ isLogin, errorMessage, successMessage, onSubmit }: any) => (
 
       <ToastContainer />
    
-      </Container>   {errorMessage && <p hidden>{notify(errorMessage)}</p>}
+      </div>   {errorMessage && <p hidden>{notify(errorMessage)}</p>}
       {successMessage && <p hidden>{notifySuccess(successMessage)}</p>}
 
 

@@ -1,10 +1,11 @@
 import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
-import { Container, Row, Col, Grid, Text, Spacer } from '@nextui-org/react';
+import { Card, Spacer } from '@nextui-org/react';
 import Registers from '../components/register'
 import RegistersByType from '../components/registerByType';
 import RegistersByCategory from '../components/registerByCategory'
 import Login from './login';
+import Header from '@/components/header';
 
 export default function Home() {
 
@@ -13,49 +14,38 @@ export default function Home() {
   return (
     <Layout >
       {user ? (
-        <Container gap={0}>
-          <Row gap={0}>
-            <Col>
-              <Registers {...user} />
-            </Col>
-          </Row>
-
+        <div>
+          <Card>
+            <Registers {...user} />
+          </Card>
           <Spacer y={1} />
-          <Row gap={0}>
-            <Col>
-              <Grid xs={12} css={{
-                height: "400px"
-              }}>
-                <Text> Grafico Despesas/Fundos </Text>
-                <RegistersByType {...user} />
-              </Grid>
-            </Col>
-            <Col>
-              <Grid xs={12} css={{
-                height: "400px"
-              }}>
-                <Text> Grafico Despesas por Categorias </Text>
-                <RegistersByCategory {...user} />
-              </Grid>
-            </Col>
-          </Row>
-        </Container>
+          <Card>
+            <div>
+              Grafico Despesas/Fundos
+              <RegistersByType {...user} />
+            </div>
+            <div>
+              Grafico Despesas por Categorias
+              <RegistersByCategory {...user} />
+            </div>
+
+          </Card>
+        </div>
       ) :
-        <Container gap={0}>
+        <div>
           <Login />
-        </Container>
-
-
+        </div>
       }
       <style jsx>{`
-          li {
-            margin-bottom: 0.5rem;
-          }
-          pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-          }
-        `}</style>
+            li {
+              margin-bottom: 0.5rem;
+            }
+            pre {
+              white-space: pre-wrap;
+              word-wrap: break-word;
+            }
+          `}</style>
     </Layout>
+
   )
 }

@@ -3,7 +3,7 @@ import Router, { useRouter } from 'next/router'
 import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
 import Form from '../components/form'
-import { Col, Row, Image, Text, Container } from '@nextui-org/react'
+import { Card, CardHeader, CardBody, CardFooter, Link, Image } from '@nextui-org/react'
 
 
 const apiLink = process.env.BACKEND_API
@@ -34,10 +34,10 @@ const Login = () => {
         credentials: 'include'
       })
       if (res.status === 200) {
-        Router.push('/').then(()=>{
-           asPath == '/' && Router.reload()
+        Router.push('/').then(() => {
+          asPath == '/' && Router.reload()
         })
-        
+
       } else {
         throw new Error(await res.text())
       }
@@ -48,25 +48,25 @@ const Login = () => {
   }
 
   return (
-    <Container gap={0} >
+    <Card className="max-w-[80%]" >
       {asPath == "/" ?
-        <Row gap={0}>
-          <Col >
-          <Image
-            alt="Cocoa icons created by Vitaly Gorbachev - Flaticon"
-            src="/cocoa.png"
-            
-          />
-          <a href="https://www.flaticon.com/free-icons/cocoa" title="cocoa icons">
-            <Text css={{textAlign: "center"}} >Cocoa icons created by Vitaly Gorbachev - Flaticon</Text>
-          </a>
-          </Col>
-          <Col> 
+        <Card >
+          <CardBody >
+            <div>
+              <Image
+                alt="Cocoa icons created by Vitaly Gorbachev - Flaticon"
+                src="/cocoa.png"
+              />
+              <a href="https://www.flaticon.com/free-icons/cocoa" title="cocoa icons">
+                Cocoa icons created by Vitaly Gorbachev - Flaticon
+              </a>
+
+            </div>
             <div className="login">
               <Form isLogin errorMessage={errorMsg} onSubmit={handleSubmit} />
             </div>
-          </Col>
-        </Row>
+          </CardBody >
+        </Card>
         :
         <Layout>
           <div className="login">
@@ -74,7 +74,7 @@ const Login = () => {
           </div>
         </Layout>
       }
-    </Container>
+    </Card>
   )
 }
 

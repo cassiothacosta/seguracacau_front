@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react'
 import Router from 'next/router'
 import RegistersTable from './registersTable'
 import Form from './formRegister'
-import { Modal, Button, Text, Table } from '@nextui-org/react'
+import { 
+  Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Button,  
+  Table,TableHeader, TableBody, TableColumn, TableRow, TableCell } from '@nextui-org/react'
 import React from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
@@ -77,19 +79,19 @@ const Registers = (props: any) => {
 
   return (
     <>
-      <Button auto shadow onPress={handler}>
+      <Button onPress={handler}>
         Adicionar Valor
       </Button>
       <Modal closeButton
         aria-labelledby="modal-title"
-        open={visible}
-        onClose={closeHandler}>
-        <Modal.Header>
-          <Text id="modal-title" size={18}>Adicionar Registro</Text>
-        </Modal.Header>
-        <Modal.Body>
+        isOpen={visible}
+        onOpenChange={closeHandler}>
+        <ModalHeader>
+           Adicionar Registro
+        </ModalHeader>
+        <ModalContent>
           <Form onSubmit={handleSubmit} />
-        </Modal.Body>
+        </ModalContent>
       </Modal>
 
       {data[0] ? (
@@ -99,43 +101,38 @@ const Registers = (props: any) => {
       ):
        <Table
         aria-label="Example table with static content"
-        css={{
-          height: "auto",
-          minWidth: "100%",
-          textDecorationColor: "#ffffff80"
-        }}
       >
-          <Table.Header>
-          <Table.Column>NOME</Table.Column>
-          <Table.Column>TIPO</Table.Column>
-          <Table.Column>CATEGORIA</Table.Column>
-          <Table.Column>PERIODICIDADE</Table.Column>
-          <Table.Column>VALOR</Table.Column>
-          <Table.Column {...{ "hidden": "{true}" }} >ID</Table.Column>
-        </Table.Header>
+          <TableHeader>
+          <TableColumn>NOME</TableColumn>
+          <TableColumn>TIPO</TableColumn>
+          <TableColumn>CATEGORIA</TableColumn>
+          <TableColumn>PERIODICIDADE</TableColumn>
+          <TableColumn>VALOR</TableColumn>
+          <TableColumn hidden >ID</TableColumn>
+        </TableHeader>
 
-        <Table.Body>
-        <Table.Row key={1}>
-          <Table.Cell key={1}>
+        <TableBody>
+        <TableRow key={1}>
+          <TableCell key={1}>
             -
-          </Table.Cell>
-          <Table.Cell key={2}>
+          </TableCell>
+          <TableCell key={2}>
             -
-          </Table.Cell>
-          <Table.Cell key={3}>
+          </TableCell>
+          <TableCell key={3}>
             -
-          </Table.Cell>
-          <Table.Cell key={4}>
+          </TableCell>
+          <TableCell key={4}>
             -
-          </Table.Cell>
-          <Table.Cell key={5}>
+          </TableCell>
+          <TableCell key={5}>
             -
-          </Table.Cell>
-          <Table.Cell key={6}>
+          </TableCell>
+          <TableCell key={6}>
             {undefined}
-          </Table.Cell>
-        </Table.Row>
-        </Table.Body>
+          </TableCell>
+        </TableRow>
+        </TableBody>
       </Table>
       }
          <ToastContainer/>
