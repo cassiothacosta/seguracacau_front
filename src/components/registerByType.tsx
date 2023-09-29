@@ -6,7 +6,7 @@ import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Tooltip } from 'recha
 
 const apiLink = process.env.BACKEND_API
 
-const RegistersByType = (props: any) => {
+export default function RegistersByType (props: any) {
 
   const [data, setRegistros] = useState([])
 
@@ -90,5 +90,3 @@ export async function getRegistersGroupByCategory({ data }: any) {
   }
 
 }
-
-export default RegistersByType

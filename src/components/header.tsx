@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import { useUser } from '../lib/hooks'
-import { ThemeSwitcher } from './ThemeSwitcher'
+import  ThemeSwitcher from './themeSwitcher'
 
-const Header = () => {
+export default function Header() {
   const user = useUser()
   
   return (
@@ -25,4 +25,3 @@ const Header = () => {
   )
 }
 
-export default Header

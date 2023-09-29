@@ -48,23 +48,27 @@ const Login = () => {
   }
 
   return (
-    <Card className="max-w-[80%]" >
+    <Card>
       {asPath == "/" ?
-        <Card >
-          <CardBody >
-            <div>
-              <Image
-                alt="Cocoa icons created by Vitaly Gorbachev - Flaticon"
-                src="/cocoa.png"
-              />
-              <a href="https://www.flaticon.com/free-icons/cocoa" title="cocoa icons">
-                Cocoa icons created by Vitaly Gorbachev - Flaticon
-              </a>
+        <Card isBlurred
+          className=""
+          shadow="md">
+          <CardBody className=' text-white font-bold rounded-lg border shadow-lg p-4'>
+            <div className='grid grid-cols-2 md:grid-cols-2 gap-1 md:gap-20 items-center justify-center'>
+              <div className='flex col-span-1 md:col-span-1'>
+                <Image
+                  alt="Cocoa icons created by Vitaly Gorbachev - Flaticon"
+                  src="/cocoa.png"
+                  className="p-10"
+                  width="100%"
+                />
 
+              </div>
+              <div className="flex justify-center col-span-1">
+                <Form isLogin errorMessage={errorMsg} onSubmit={handleSubmit} />
+              </div>
             </div>
-            <div className="login">
-              <Form isLogin errorMessage={errorMsg} onSubmit={handleSubmit} />
-            </div>
+
           </CardBody >
         </Card>
         :

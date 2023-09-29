@@ -1,14 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Input, Modal, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, ModalFooter } from '@nextui-org/react'
-import { Card } from "@nextui-org/react";
-import { NumericFormat } from 'react-number-format';
+import { Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, ModalFooter, Select, SelectItem, ModalHeader } from '@nextui-org/react'
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 
 
 
-export default function formRegister({ onSubmit }: any) {
+export default function FormRegister({ onSubmit }: any) {
 
   const [selectedType, setSelectedType] = useState(new Set(["despesa"]));
 
@@ -34,131 +32,102 @@ export default function formRegister({ onSubmit }: any) {
 
 
   return (
-
     <form onSubmit={onSubmit}>
-      <div>
-        <div>
-          <Input
-            aria-label='Nome'
-            isClearable
-            variant='bordered'
-            fullWidth
-            color="primary"
-            size="md"
-            type="text"
-            name="name"
-            placeholder="Nome"
-            required
-          />
-        </div>
-        <div >Selecione um tipo</div>
-        <div>
+      <ModalHeader>
+        Adicionar Registro
+      </ModalHeader>
+      <Input
+        isRequired
+        aria-label='Nome'
+        label="Escreva o nome"
+        isClearable
+        variant='bordered'
+        fullWidth
+        color="primary"
+        size="md"
+        type="text"
+        name="name"
+        placeholder="Nome"
+        labelPlacement="outside"
+      />
 
-          <Dropdown>
-            <DropdownTrigger>
-              <Button variant="bordered"
-                className="capitalize">
-                {selectedType}
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              aria-label="Single selection example"
-              color="secondary"
-              disallowEmptySelection
-              selectionMode="single"
-              selectedKeys={selectedType}
-              onSelectionChange={setSelectedType as any}
-            >
-              <DropdownItem key="despesa">
-                Despesa
-              </DropdownItem>
-              <DropdownItem key="fundo">
-                Fundo
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        </div>
-        <div>Selecione uma categoria</div>
-        <div >
-          <Dropdown>
-            <DropdownTrigger>
-              <Button variant="bordered"
-                className="capitalize">
-                {selectedCategory}
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              aria-label="Single selection actions"
-              color="secondary"
-              disallowEmptySelection={true}
-              selectionMode="single"
-              selectedKeys={selectedCategory}
-              onSelectionChange={setSelectedCategory as any}
-            >
-              <DropdownItem key="casa">
-                Casa
-              </DropdownItem>
-              <DropdownItem key="compras">
-                Compras
-              </DropdownItem>
-              <DropdownItem key="telefone">
-                Telefone
-              </DropdownItem>
-              <DropdownItem key="ferias">
-                Férias
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        </div>
-        <div >Selecione um Período</div>
-        <div >
-          <Dropdown>
-            <DropdownTrigger><Button variant="bordered"
-              className="capitalize">
-              {selectedValue}
-            </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              aria-label="Single selection actions"
-              color="secondary"
-              disallowEmptySelection={true}
-              selectionMode="single"
-              selectedKeys={selectedValue}
-              onSelectionChange={setSelectedValue as any}
-            >
-              <DropdownItem key="esporadico">
-                Esporadico
-              </DropdownItem>
-              <DropdownItem key="mensal">
-                Mensal
-              </DropdownItem>
-              <DropdownItem key="anual">
-                Anual
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        </div>
-        <div>
-          <Input
-            aria-label='Valor'
-            isClearable
-            variant='bordered'
-            fullWidth
-            color="primary"
-            size="md"
-            name="value" required
-            type="number"
-            label="Price"
-            placeholder="0.00"
-            labelPlacement="outside"
-            endContent={
-              <div className="pointer-events-none flex items-center">
-                <span className="text-default-400 text-small">$</span>
-              </div>
-            }
-          />
-        </div>
-      </div>
+      <Select
+        isRequired
+        label="Escolha o tipo"
+        placeholder="Despesa"
+        defaultSelectedKeys={["despesa"]}
+        className="max-w-xs"
+        name="type"
+      >
+        <SelectItem key="despesa" value="despesa">
+          Despesa
+        </SelectItem>
+        <SelectItem key="receita" value="receita">
+          Receita
+        </SelectItem>
+      </Select>
+
+      <Select
+        isRequired
+        label="Escolha uma categoria"
+        placeholder="Casa"
+        defaultSelectedKeys={["casa"]}
+        className="max-w-xs"
+        name="category"
+      >
+        <SelectItem key="casa" value="casa">
+          Casa
+        </SelectItem>
+        <SelectItem key="compras" >
+          Compras
+        </SelectItem>
+        <SelectItem key="telefone">
+          Telefone
+        </SelectItem>
+        <SelectItem key="ferias">
+          Férias
+        </SelectItem>
+      </Select>
+
+      <Select
+        isRequired
+        label="Escolha um periodo"
+        placeholder="Esporadico"
+        defaultSelectedKeys={["esporadico"]}
+        className="max-w-xs"
+        name="period"
+      >
+        <SelectItem key="esporadico" value="esporadico">
+          Esporadico
+        </SelectItem>
+        <SelectItem key="mensal" value="mensal">
+          Mensal
+        </SelectItem>
+        <SelectItem key="anual" value="anual">
+          Anual
+        </SelectItem>
+      </Select>
+
+      <Input
+        isRequired
+        aria-label='Valor'
+        isClearable
+        variant='bordered'
+        fullWidth
+        color="primary"
+        size="md"
+        name="value" required
+        type="number"
+        label="Escreva o valor"
+        placeholder="0.00"
+        labelPlacement="outside"
+        endContent={
+          <div className="pointer-events-none flex items-center">
+            <span className="text-default-400 text-small">R$</span>
+          </div>
+        }
+      />
+
       <ModalFooter>
         <Button type="submit">
           Enviar

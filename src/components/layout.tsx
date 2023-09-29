@@ -1,16 +1,14 @@
 import Header from "./header"
 
-const Layout = (props: any) => (
-  <div>
-    <Header/>
+export default function Layout(props: any) {
+  return (
+  <>
+    <Header />
     {props.children && (
-
-      <div> {props.children}</div>
-
+      <div className="flex items-center justify-center h-screen"> {props.children}</div>
     )
-
     }
-  </div>
-)
+  </>
+  )
+}
 
-export default Layout

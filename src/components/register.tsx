@@ -12,7 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const apiLink = process.env.BACKEND_API
 
-const Registers = (props: any) => {
+export default function Registers(props: any) {
   
   const notify = (errorMessage: any) => toast.error(errorMessage);
   const notifySuccess = (errorMessage: any) => toast.success(errorMessage);
@@ -54,13 +54,14 @@ const Registers = (props: any) => {
     if (errorMsg) setErrorMsg('')
     if (successMessage) setSuccessMsg('')
 
+    console.log(e.currentTarget)
     const body = {
       username: props.username,
-      name: e.currentTarget.name.value,
-      type: e.currentTarget.type.lastElementChild.innerText,
-      category: e.currentTarget.category.lastElementChild.innerText,
-      period: e.currentTarget.period.lastElementChild.innerText,
-      value: e.currentTarget.value.value,
+      name: e.currentTarget.elements.name.value,
+      type: e.currentTarget.elements.type.value,
+      category: e.currentTarget.elements.category.value,
+      period: e.currentTarget.elements.period.value,
+      value: e.currentTarget.elements.value.value,
     }
     try{
       await addRegisters({ body }).then((response: any) => {
@@ -86,9 +87,7 @@ const Registers = (props: any) => {
         aria-labelledby="modal-title"
         isOpen={visible}
         onOpenChange={closeHandler}>
-        <ModalHeader>
-           Adicionar Registro
-        </ModalHeader>
+       
         <ModalContent>
           <Form onSubmit={handleSubmit} />
         </ModalContent>
@@ -158,6 +157,3 @@ export async function addRegisters({ body }: any) {
   }
   
 }
-
-
-export default Registers
