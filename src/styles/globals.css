@@ -81,13 +81,3 @@ a {
     rgb(var(--background-start-rgb)));
   }
 }
-
-@media (prefers-color-scheme: light) {
-  html {
-    color-scheme: light;
-  }
-  body {
-    background: conic-gradient(#ff8a00, #e52e71)
-  }
-}
-

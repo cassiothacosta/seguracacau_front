@@ -1,5 +1,6 @@
+import { nextui } from "@nextui-org/react"
 /** @type {import('tailwindcss').Config} */
-const { nextui } = require("@nextui-org/react");
+
 
 module.exports = {
   content: [
@@ -39,6 +40,21 @@ module.exports = {
       },
       themes: {
         light: {
+          colors: {
+            primary: {
+              100: "#C9FBE2",
+              200: "#95F8CF",
+              300: "#5EEBBD",
+              400: "#35D7B2",
+              500: "#00BDA3",
+              600: "#00A29B",
+              700: "#008188",
+              800: "#005E6D",
+              900: "#00455A",
+              DEFAULT: "#35D7B2"
+            },
+            focus: "#35D7B2"
+          },
           layout: {
             boxShadow: {
               // shadow-small
@@ -54,6 +70,21 @@ module.exports = {
           },
         },
         dark: {
+          colors: {
+            primary: {
+              100: "#C9FBE2",
+              200: "#95F8CF",
+              300: "#5EEBBD",
+              400: "#35D7B2",
+              500: "#00BDA3",
+              600: "#00A29B",
+              700: "#008188",
+              800: "#005E6D",
+              900: "#00455A",
+              DEFAULT: "#35D7B2"
+            },
+            focus: "#35D7B2"
+          },
           layout: {
             boxShadow: {
               // shadow-small

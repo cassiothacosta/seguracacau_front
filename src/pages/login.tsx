@@ -58,11 +58,11 @@ const Login = () => {
       </div>
       <div
         className="flex justify-center col-span-1 w-full h-full items-center bg-background">
-        <div className='grid grid-rows-2 w-[80%] h-[50%]'>
-          <div className='text-5xl text-foreground font-medium'>
+        <div className='grid grid-rows-3 w-[80%] h-[60%]'>
+          <div className='text-5xl row-span-1 text-foreground font-medium'>
             Bem vindo ao Segura Cacau
           </div>
-          <div className='h-[100%]'>
+          <div className='flex row-span-2'>
             <Form isLogin errorMessage={errorMsg} onSubmit={handleSubmit} />
           </div>
         </div>

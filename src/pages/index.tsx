@@ -21,7 +21,7 @@ export default function Home() {
           <Spacer y={1} />
           <Card>
             <div>
-              Grafico Despesas/Fundos
+              Grafico Despesas/Receitas
               <RegistersByType {...user} />
             </div>
             <div>

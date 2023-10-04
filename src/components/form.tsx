@@ -38,7 +38,7 @@ export default function Form({ isLogin, errorMessage, successMessage, onSubmit }
                     Não tenho uma conta
                   </Link>
                 </div>
-                <Button type="submit">Enviar</Button>
+                <Button color="primary" type="submit">Enviar</Button>
               </>
             ) : (
               <>

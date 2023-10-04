@@ -16,20 +16,20 @@ export default function ThemeSwitcher() {
   return (
     <div className="absolute top-3 right-3">
       {theme == 'dark' ?
-        <div className="flex justify-center w-8 h-8 bg-background rounded-md">
+        <div className="flex justify-center w-8 h-8">
           <button onClick={() => setTheme('light')}>
             <Image
-             alt="Moon Outline - Iconfinder"
-             src="/sun_icon.png"
+              alt="Moon Outline - Iconfinder"
+              src="/sun_icon.png"
             />
           </button>
         </div>
         :
-        <div className="flex justify-center w-8 h-8 bg-background rounded-md">
-          <button  onClick={() => setTheme('dark')}><Image 
-             alt="Sun icon - Iconfinder"
-             src="/moon_icon.png"
-            /></button>
+        <div className="flex justify-center w-8 h-8d">
+          <button onClick={() => setTheme('dark')}><Image
+            alt="Sun icon - Iconfinder"
+            src="/moon_icon.png"
+          /></button>
         </div>
       }
     </div>
