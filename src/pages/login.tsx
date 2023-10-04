@@ -48,37 +48,26 @@ const Login = () => {
   }
 
   return (
-    <Card>
-      {asPath == "/" ?
-        <Card isBlurred
-          className=""
-          shadow="md">
-          <CardBody className=' text-white font-bold rounded-lg border shadow-lg p-4'>
-            <div className='grid grid-cols-2 md:grid-cols-2 gap-1 md:gap-20 items-center justify-center'>
-              <div className='flex col-span-1 md:col-span-1'>
-                <Image
-                  alt="Cocoa icons created by Vitaly Gorbachev - Flaticon"
-                  src="/cocoa.png"
-                  className="p-10"
-                  width="100%"
-                />
+    <div className='grid grid-cols-2 md:grid-cols-2 items-center w-full h-full rounded-sm shadow-lg'>
+      <div className='flex justify-center'>
+        <Image
+          alt="Cocoa icons created by Vitaly Gorbachev - Flaticon"
+          src="/cocoa.png"
 
-              </div>
-              <div className="flex justify-center col-span-1">
-                <Form isLogin errorMessage={errorMsg} onSubmit={handleSubmit} />
-              </div>
-            </div>
-
-          </CardBody >
-        </Card>
-        :
-        <Layout>
-          <div className="login">
+        />
+      </div>
+      <div
+        className="flex justify-center col-span-1 w-full h-full items-center bg-background">
+        <div className='grid grid-rows-2 w-[80%] h-[50%]'>
+          <div className='text-5xl text-foreground font-medium'>
+            Bem vindo ao Segura Cacau
+          </div>
+          <div className='h-[100%]'>
             <Form isLogin errorMessage={errorMsg} onSubmit={handleSubmit} />
           </div>
-        </Layout>
-      }
-    </Card>
+        </div>
+      </div>
+    </div>
   )
 }
 

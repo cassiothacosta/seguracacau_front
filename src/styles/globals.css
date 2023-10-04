@@ -3,15 +3,13 @@
 @tailwind utilities;
 
 :root {
-  --max-width: 100%;
-  --border-radius: 0px;
   --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
     'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
 
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 255, 255, 255;
-  --background-end-rgb: 173, 255, 236;
+  --background-start-rgb: 0, 255, 220;
+  --background-end-rgb: 0, 135, 135;
 
   --primary-glow: conic-gradient(
     from 180deg at 50% 50%,
@@ -46,9 +44,6 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-
-
-
     --tile-start-rgb: 2, 13, 46;
     --tile-end-rgb: 2, 5, 19;
     --tile-border: conic-gradient(
@@ -60,30 +55,15 @@
       #ffffff10,
       #ffffff80
     );
-
     --callout-rgb: 20, 20, 20;
     --callout-border-rgb: 108, 108, 108;
     --card-rgb: 100, 100, 100;
     --card-border-rgb: 200, 200, 200;
   }
+  
 }
 
-html,
-body {
-  height: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-}
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
 
 a {
   color: inherit;
@@ -94,4 +74,20 @@ a {
   html {
     color-scheme: dark;
   }
+  body {
+    background: conic-gradient(from 90deg,
+      rgb(var(--background-end-rgb))
+    ,
+    rgb(var(--background-start-rgb)));
+  }
 }
+
+@media (prefers-color-scheme: light) {
+  html {
+    color-scheme: light;
+  }
+  body {
+    background: conic-gradient(#ff8a00, #e52e71)
+  }
+}
+

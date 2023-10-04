@@ -1,4 +1,6 @@
-import {useTheme} from "next-themes";
+
+import { Divider, Image } from "@nextui-org/react";
+import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 export default function ThemeSwitcher() {
@@ -9,13 +11,27 @@ export default function ThemeSwitcher() {
     setMounted(true)
   }, [])
 
-  if(!mounted) return null
+  if (!mounted) return null
 
   return (
-    <div>
-      The current theme is: {theme}
-      <button onClick={() => setTheme('light')}>Light Mode</button>
-      <button onClick={() => setTheme('dark')}>Dark Mode</button>
+    <div className="absolute top-3 right-3">
+      {theme == 'dark' ?
+        <div className="flex justify-center w-8 h-8 bg-background rounded-md">
+          <button onClick={() => setTheme('light')}>
+            <Image
+             alt="Moon Outline - Iconfinder"
+             src="/sun_icon.png"
+            />
+          </button>
+        </div>
+        :
+        <div className="flex justify-center w-8 h-8 bg-background rounded-md">
+          <button  onClick={() => setTheme('dark')}><Image 
+             alt="Sun icon - Iconfinder"
+             src="/moon_icon.png"
+            /></button>
+        </div>
+      }
     </div>
   )
 };

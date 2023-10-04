@@ -39,7 +39,7 @@ const Signup = () => {
       if (res.status === 200) {
         setSuccessMsg('Sucesso ao criar o usuário!')
         setTimeout(() => {
-          Router.push('/login')
+          Router.push('/')
         }, 3000);
         
       } else {
