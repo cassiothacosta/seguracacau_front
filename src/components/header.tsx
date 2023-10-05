@@ -9,13 +9,6 @@ export default function Header() {
     <header>
       <nav>
         <ul>
-          {user && (            
-              <li>
-                <Link href= "http://localhost:3000/api/logout" legacyBehavior>
-                 Logout
-                </Link>
-              </li>
-          )}
           <li>
             <ThemeSwitcher/>
           </li>

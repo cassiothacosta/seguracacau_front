@@ -2,8 +2,9 @@ import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell } from 
 
 export default function RegistersTable(tableData: any) {
   return (
-    <Table
-      aria-label="Example table with static content"
+  
+    <Table 
+      aria-label="Tabela contendo os registros do usuario"
     >
       <TableHeader>
         <TableColumn>NOME</TableColumn>
@@ -11,6 +12,7 @@ export default function RegistersTable(tableData: any) {
         <TableColumn>CATEGORIA</TableColumn>
         <TableColumn>PERIODICIDADE</TableColumn>
         <TableColumn>VALOR</TableColumn>
+        <TableColumn>ADICIONADO</TableColumn>
         <TableColumn hidden >ID</TableColumn>
       </TableHeader>
 

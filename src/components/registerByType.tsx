@@ -45,6 +45,7 @@ export default function RegistersByType (props: any) {
       {data[0] && (
         <ResponsiveContainer width="100%" height="100%" >
           <PieChart width={400} height={400}>
+            {console.log(data[0])}
             <Pie
               data={data}
               cx="50%"

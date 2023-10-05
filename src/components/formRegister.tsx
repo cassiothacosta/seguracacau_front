@@ -32,7 +32,7 @@ export default function FormRegister({ onSubmit }: any) {
 
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className='grid gap-4 pl-5 pr-5'>
       <ModalHeader>
         Adicionar Registro
       </ModalHeader>
@@ -129,7 +129,7 @@ export default function FormRegister({ onSubmit }: any) {
       />
 
       <ModalFooter>
-        <Button type="submit">
+        <Button type="submit" color='primary'>
           Enviar
         </Button>
       </ModalFooter>
