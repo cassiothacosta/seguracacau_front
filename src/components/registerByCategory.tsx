@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Router from 'next/router'
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
 
@@ -43,7 +43,7 @@ export default function RegistersByCategory (props: any){
   return (
     <>
       {data[0] && (
-        <ResponsiveContainer width="100%" height="100%">
+        <div >
           <PieChart width={400} height={400}>
             <Pie
               data={data}
@@ -61,7 +61,7 @@ export default function RegistersByCategory (props: any){
             </Pie>
             <Tooltip />
           </PieChart>
-        </ResponsiveContainer>
+        </div>
       )
       }
     </>

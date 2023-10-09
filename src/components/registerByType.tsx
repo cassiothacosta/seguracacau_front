@@ -43,7 +43,7 @@ export default function RegistersByType (props: any) {
   return (
     <>
       {data[0] && (
-        <ResponsiveContainer width="100%" height="100%" >
+        <div className='flex grid place-content-center'>
           <PieChart width={400} height={400}>
             {console.log(data[0])}
             <Pie
@@ -62,7 +62,7 @@ export default function RegistersByType (props: any) {
             </Pie>
             <Tooltip/>
           </PieChart>
-        </ResponsiveContainer>
+        </div>
       )
       }
     </>

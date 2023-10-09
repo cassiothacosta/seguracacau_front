@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, ModalFooter, Select, SelectItem, ModalHeader } from '@nextui-org/react'
+import { Input, Button, ModalFooter, Select, SelectItem, ModalHeader } from '@nextui-org/react'
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import { useTranslation } from "next-i18next";
 
 
 
 
 export default function FormRegister({ onSubmit }: any) {
-
+  const { t } = useTranslation('common')
   const [selectedType, setSelectedType] = useState(new Set(["despesa"]));
 
   React.useMemo(
@@ -34,12 +35,12 @@ export default function FormRegister({ onSubmit }: any) {
   return (
     <form onSubmit={onSubmit} className='grid gap-4 pl-5 pr-5'>
       <ModalHeader>
-        Adicionar Registro
+        {t('registerTable.addValue')}
       </ModalHeader>
       <Input
         isRequired
         aria-label='Nome'
-        label="Escreva o nome"
+        label={t('registerTable.typeName')}
         isClearable
         variant='bordered'
         fullWidth
@@ -47,64 +48,61 @@ export default function FormRegister({ onSubmit }: any) {
         size="md"
         type="text"
         name="name"
-        placeholder="Nome"
+        placeholder={t('registerTable.name')}
         labelPlacement="outside"
       />
 
       <Select
-        isRequired
-        label="Escolha o tipo"
-        placeholder="Despesa"
+        label={t('registerTable.chooseType')}
+        placeholder={t('registerTable.debit')}
         defaultSelectedKeys={["despesa"]}
         className="max-w-xs"
         name="type"
       >
         <SelectItem key="despesa" value="despesa">
-          Despesa
+          {t('registerTable.debit')}
         </SelectItem>
         <SelectItem key="receita" value="receita">
-          Receita
+          {t('registerTable.credit')}
         </SelectItem>
       </Select>
 
       <Select
-        isRequired
-        label="Escolha uma categoria"
-        placeholder="Casa"
+        label= {t('registerTable.chooseCategory')}
+        placeholder= {t('registerTable.house')}
         defaultSelectedKeys={["casa"]}
         className="max-w-xs"
         name="category"
       >
         <SelectItem key="casa" value="casa">
-          Casa
+        {t('registerTable.house')}
         </SelectItem>
-        <SelectItem key="compras" >
-          Compras
+        <SelectItem key="compras" value="compras">
+        {t('registerTable.expenses')}
         </SelectItem>
-        <SelectItem key="telefone">
-          Telefone
+        <SelectItem key="telefone" value="telefone">
+        {t('registerTable.phone')}
         </SelectItem>
-        <SelectItem key="ferias">
-          Férias
+        <SelectItem key="ferias" value="ferias">
+        {t('registerTable.vacations')}
         </SelectItem>
       </Select>
 
       <Select
-        isRequired
-        label="Escolha um periodo"
-        placeholder="Esporadico"
+        label= {t('registerTable.choosePeriod')}
+        placeholder= {t('registerTable.sporadic')}
         defaultSelectedKeys={["esporadico"]}
         className="max-w-xs"
         name="period"
       >
         <SelectItem key="esporadico" value="esporadico">
-          Esporadico
+        {t('registerTable.sporadic')}
         </SelectItem>
         <SelectItem key="mensal" value="mensal">
-          Mensal
+        {t('registerTable.montly')}
         </SelectItem>
         <SelectItem key="anual" value="anual">
-          Anual
+        {t('registerTable.yearly')}
         </SelectItem>
       </Select>
 
@@ -118,19 +116,19 @@ export default function FormRegister({ onSubmit }: any) {
         size="md"
         name="value" required
         type="number"
-        label="Escreva o valor"
+        label={t('registerTable.typeValue')}
         placeholder="0.00"
         labelPlacement="outside"
         endContent={
           <div className="pointer-events-none flex items-center">
-            <span className="text-default-400 text-small">R$</span>
+            <span className="text-default-400 text-small">$</span>
           </div>
         }
       />
 
       <ModalFooter>
-        <Button type="submit" color='primary'>
-          Enviar
+        <Button  type="submit" color='primary'>
+        {t('registerTable.send')}
         </Button>
       </ModalFooter>
 

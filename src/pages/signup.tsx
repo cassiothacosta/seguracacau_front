@@ -3,7 +3,9 @@ import Router from 'next/router'
 import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
 import Form from '../components/form'
-import { ToastContainer, toast } from 'react-toastify';
+import {  toast } from 'react-toastify';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next';
 
 
 const apiLink = process.env.BACKEND_API
@@ -59,5 +61,14 @@ const Signup = () => {
     </Layout>
   )
 }
+
+export const getStaticProps :GetStaticProps = async ({ locale }) =>({
+  props: {
+    ...(await serverSideTranslations(locale as any, [
+      'common'
+    ])),
+    // Will be passed to the page component as props
+  },
+})
 
 export default Signup

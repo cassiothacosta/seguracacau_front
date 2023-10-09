@@ -4,16 +4,18 @@ import RegistersTable from './registersTable'
 import Form from './formRegister'
 import {
   Modal, ModalContent, Button,
-  Table, TableHeader, TableBody, TableColumn, TableRow, TableCell
+  Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Spacer
 } from '@nextui-org/react'
 import React from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import { useTranslation } from "next-i18next";
 
 
 const apiLink = process.env.BACKEND_API
 
 export default function Registers(props: any) {
+  const { t } = useTranslation('common')
 
   const notify = (errorMessage: any) => toast.error(errorMessage);
   const notifySuccess = (errorMessage: any) => toast.success(errorMessage);
@@ -67,23 +69,26 @@ export default function Registers(props: any) {
     try {
       await addRegisters({ body }).then((response: any) => {
         if (response.status == 200) {
-          setSuccessMsg('Sucesso ao adicionar o registro')
-          Router.push('/')
+          setSuccessMsg(t('registerTable.sucessMsg'))
+          setTimeout(() => {
+            notifySuccess(successMessage)
+          }, 100)
+          Router.reload()
         } else {
+          setErrorMsg(t('registerTable.errorMsg') + response.text())
+          notify(errorMsg)
           throw new Error(response.text())
         }
       })
     } catch (error: any) {
-      console.error('An unexpected error happened occurred:', error)
+      console.error(t('registerTable.unexError'), error)
       setErrorMsg(error.message)
     }
   }
 
   return (
     <div className='grid grid-rows-5 w-[100%]'>
-      <Button className='flex grid row-span-1 ' color='primary'  onPress={handler}>
-        Adicionar Valor
-      </Button>
+
       <Modal closeButton
         aria-labelledby="modal-title"
         isOpen={visible}
@@ -95,54 +100,65 @@ export default function Registers(props: any) {
       </Modal>
 
       {data[0] ? (
-        <div className='flex grid row-span-4'>
-          <RegistersTable {...data} />
+        <div className='flex grid grid-rows-4'>
+          <Button className='absolute grid justify-end row-span-1' color='primary' onPress={handler}>
+            {t('registerTable.addValue')}
+          </Button>
+          <Spacer x={1} />
+          <div className='flex grid row-span-2'>
+            <RegistersTable {...data} />
+          </div>
         </div>
       ) :
-        <Table className='flex grid row-span-4'
-          aria-label="Example table with static content"
-        >
-          <TableHeader>
-            <TableColumn>NOME</TableColumn>
-            <TableColumn>TIPO</TableColumn>
-            <TableColumn>CATEGORIA</TableColumn>
-            <TableColumn>PERIODICIDADE</TableColumn>
-            <TableColumn>VALOR</TableColumn>
-            <TableColumn>ADICIONADO</TableColumn>
-            <TableColumn >ID</TableColumn>
-          </TableHeader>
+        <div className='flex grid grid-rows-4'>
+          <Button className='absolute grid justify-end row-span-1' color='primary' onPress={handler}>
+            {t('registerTable.addValue')}
+          </Button>
+          <Spacer x={1} />
+          <div className='flex grid row-span-2'>
+            <Table
+              aria-label="Example table with static content"
+            >
+              <TableHeader>
+                <TableColumn className="uppercase">{t('registerTable.name')}</TableColumn>
+                <TableColumn className="uppercase">{t('registerTable.type')}</TableColumn>
+                <TableColumn className="uppercase">{t('registerTable.category')}</TableColumn>
+                <TableColumn className="uppercase">{t('registerTable.pariod')}</TableColumn>
+                <TableColumn className="uppercase">{t('registerTable.value')}</TableColumn>
+                <TableColumn className="uppercase">{t('registerTable.added')}</TableColumn>
+                <TableColumn hidden >ID</TableColumn>
+              </TableHeader>
 
-          <TableBody>
-            <TableRow key={1}>
-              <TableCell key={1}>
-                -
-              </TableCell>
-              <TableCell key={2}>
-                -
-              </TableCell>
-              <TableCell key={3}>
-                -
-              </TableCell>
-              <TableCell key={4}>
-                -
-              </TableCell>
-              <TableCell key={5}>
-                -
-              </TableCell>
-              <TableCell key={6}>
-                -
-              </TableCell>
-              <TableCell key={7}>
-                {undefined}
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+              <TableBody>
+                <TableRow key={1}>
+                  <TableCell key={1}>
+                    -
+                  </TableCell>
+                  <TableCell key={2}>
+                    -
+                  </TableCell>
+                  <TableCell key={3}>
+                    -
+                  </TableCell>
+                  <TableCell key={4}>
+                    -
+                  </TableCell>
+                  <TableCell key={5}>
+                    -
+                  </TableCell>
+                  <TableCell key={6}>
+                    -
+                  </TableCell>
+                  <TableCell key={7}>
+                    {undefined}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </div>
+        </div>
       }
-      <ToastContainer />
-      {errorMsg && <p hidden>{notify(errorMsg)}</p>}
-      {successMessage && <p hidden>{notifySuccess(successMessage)}</p>}
-
+      <ToastContainer className='grid row-span-1' />
     </div>
   )
 }

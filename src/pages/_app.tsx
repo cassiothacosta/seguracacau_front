@@ -2,8 +2,9 @@ import '@/styles/globals.css'
 import { NextUIProvider } from '@nextui-org/react'
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import type { AppProps } from 'next/app'
+import { appWithTranslation } from 'next-i18next'
 
-export default function App({ Component, pageProps }: AppProps) {
+const App = ({ Component, pageProps }: AppProps) => {
   return (
     <NextUIProvider>
       <NextThemesProvider attribute='class' defaultTheme='dark'>
@@ -12,3 +13,4 @@ export default function App({ Component, pageProps }: AppProps) {
     </NextUIProvider>
   )
 }
+export default appWithTranslation(App)

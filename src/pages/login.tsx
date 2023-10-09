@@ -3,12 +3,16 @@ import Router, { useRouter } from 'next/router'
 import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
 import Form from '../components/form'
-import { Card, CardHeader, CardBody, CardFooter, Link, Image } from '@nextui-org/react'
+import { Image } from '@nextui-org/react'
+import { useTranslation } from 'react-i18next'
+
+
 
 
 const apiLink = process.env.BACKEND_API
 
 const Login = () => {
+  const { t } = useTranslation('common')
   const { asPath } = useRouter()
 
   useUser({ redirectTo: '/', redirectIfFound: true })
@@ -59,8 +63,8 @@ const Login = () => {
       <div
         className="flex justify-center col-span-1 w-full h-full items-center bg-background">
         <div className='grid grid-rows-3 w-[80%] h-[60%]'>
-          <div className='text-5xl row-span-1 text-foreground font-medium'>
-            Bem vindo ao Segura Cacau
+          <div className='text-5xl row-span-1 text-foreground font-medium' suppressHydrationWarning >
+              {t('welcome')}
           </div>
           <div className='flex row-span-2'>
             <Form isLogin errorMessage={errorMsg} onSubmit={handleSubmit} />
