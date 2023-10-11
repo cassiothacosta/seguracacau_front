@@ -37,6 +37,7 @@
       "send": "Send",
       "sucessMsg": "Success on adding the register",
       "errorMsg": "Error on adding the register",
-      "unexError": "An unexpected error happened occurred:"
+      "unexError": "An unexpected error happened occurred:",
+      "delete": "Delete"
     }
   }

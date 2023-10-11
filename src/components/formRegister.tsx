@@ -116,6 +116,7 @@ export default function FormRegister({ onSubmit }: any) {
         size="md"
         name="value" required
         type="number"
+        step="0.01"
         label={t('registerTable.typeValue')}
         placeholder="0.00"
         labelPlacement="outside"

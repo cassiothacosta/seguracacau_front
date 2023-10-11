@@ -73,7 +73,6 @@ export default function Registers(props: any) {
           setTimeout(() => {
             notifySuccess(successMessage)
           }, 100)
-          Router.reload()
         } else {
           setErrorMsg(t('registerTable.errorMsg') + response.text())
           notify(errorMsg)

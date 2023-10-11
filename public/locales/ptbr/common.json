@@ -37,6 +37,7 @@
       "send": "Enviar",
       "sucessMsg": "Sucesso ao adicionar o registro",
       "errorMsg": "Erro ao Adicionar o Registro",
-      "unexError": "Um erro inesperado aconteceu:"
+      "unexError": "Um erro inesperado aconteceu:",
+      "delete": "Excluir"
     }
   }
