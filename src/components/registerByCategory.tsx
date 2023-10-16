@@ -88,26 +88,3 @@ export default function RegistersByCategory(props: any) {
     </>
   )
 }
-
-export async function getRegistersGroupByCategory({ data }: any) {
-  try {
-    const res = await fetch(apiLink + '/api/getRegistersGroupByCategory', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-      credentials: 'include'
-    })
-    if (res.status === 200) {
-
-      Router.push('/')
-      const registros = await res.json()
-      return registros;
-    } else {
-      throw new Error(await res.text())
-    }
-  } catch (error: any) {
-    console.error('An unexpected error happened occurred:', error)
-
-  }
-
-}

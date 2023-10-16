@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react'
-import Router from 'next/router'
 import RegistersTable from './registersTable'
 import Form from './formRegister'
 import {
-  Modal, ModalContent, Button,
-  Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Spacer
+  Modal, ModalContent, Button, Spacer, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow,
 } from '@nextui-org/react'
 import React from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { useTranslation } from "next-i18next";
+import { PlusIcon } from "./PlusIcon";
 
 
 const apiLink = process.env.BACKEND_API
@@ -86,8 +85,7 @@ export default function Registers(props: any) {
   }
 
   return (
-    <div className='grid grid-rows-5 w-[100%]'>
-
+    <div className='grid w-[100%] h-[100%] '>
       <Modal closeButton
         aria-labelledby="modal-title"
         isOpen={visible}
@@ -98,17 +96,18 @@ export default function Registers(props: any) {
         </ModalContent>
       </Modal>
 
-      {data[0] ? (
-        <div className='flex grid grid-rows-4'>
-          <Button className='absolute grid justify-end row-span-1' color='primary' onPress={handler}>
-            {t('registerTable.addValue')}
-          </Button>
-          <Spacer x={1} />
-          <div className='flex grid row-span-2'>
-            <RegistersTable {...data} />
+      {data[0] ?
+        <div className='flex justify-items-center grid'>
+          <div className="justify-self-end">
+            <Button color="primary" onPress={handler} endContent={<PlusIcon />}>
+              {t('registerTable.addValue')}
+            </Button>
           </div>
-        </div>
-      ) :
+          <div className='w-[100%] h-[100%] content-top'>
+            <RegistersTable {...{ data }} />
+          </div>
+        </div> :
+
         <div className='flex grid grid-rows-4'>
           <Button className='absolute grid justify-end row-span-1' color='primary' onPress={handler}>
             {t('registerTable.addValue')}
@@ -122,42 +121,18 @@ export default function Registers(props: any) {
                 <TableColumn className="uppercase">{t('registerTable.name')}</TableColumn>
                 <TableColumn className="uppercase">{t('registerTable.type')}</TableColumn>
                 <TableColumn className="uppercase">{t('registerTable.category')}</TableColumn>
-                <TableColumn className="uppercase">{t('registerTable.pariod')}</TableColumn>
+                <TableColumn className="uppercase">{t('registerTable.period')}</TableColumn>
                 <TableColumn className="uppercase">{t('registerTable.value')}</TableColumn>
                 <TableColumn className="uppercase">{t('registerTable.added')}</TableColumn>
                 <TableColumn hidden >ID</TableColumn>
               </TableHeader>
 
-              <TableBody>
-                <TableRow key={1}>
-                  <TableCell key={1}>
-                    -
-                  </TableCell>
-                  <TableCell key={2}>
-                    -
-                  </TableCell>
-                  <TableCell key={3}>
-                    -
-                  </TableCell>
-                  <TableCell key={4}>
-                    -
-                  </TableCell>
-                  <TableCell key={5}>
-                    -
-                  </TableCell>
-                  <TableCell key={6}>
-                    -
-                  </TableCell>
-                  <TableCell key={7}>
-                    {undefined}
-                  </TableCell>
-                </TableRow>
+              <TableBody emptyContent={"No registers found"}>
               </TableBody>
             </Table>
           </div>
         </div>
       }
-      <ToastContainer className='grid row-span-1' />
     </div>
   )
 }

@@ -38,7 +38,7 @@ export default function Form({ isLogin, errorMessage, successMessage, onSubmit }
               <>
                 <div className='text-right font-bold'>
                   <Link href="/signup" >
-                  <button type="button" className='text-blue-500'>{t('naccount')}</button>
+                    <button type="button" className='text-blue-500'>{t('naccount')}</button>
                   </Link>
                 </div>
                 <Button color="primary" type="submit">{t('login')}</Button>
@@ -51,7 +51,7 @@ export default function Form({ isLogin, errorMessage, successMessage, onSubmit }
                   </Link>
                 </div>
                 <Spacer y={1} />
-                <Button type="submit">{t('login')}</Button>
+                <Button  color="primary" type="submit">{t('signin')}</Button>
               </>
             )}
           </div>

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Input, Button, ModalFooter, Select, SelectItem, ModalHeader } from '@nextui-org/react'
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import { useTranslation } from "next-i18next";
 
 
@@ -132,7 +132,7 @@ export default function FormRegister({ onSubmit }: any) {
         {t('registerTable.send')}
         </Button>
       </ModalFooter>
-
+      <ToastContainer />
     </form>
   )
 }

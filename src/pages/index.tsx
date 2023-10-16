@@ -21,40 +21,7 @@ export default function Home() {
 
   const [errorMsg, setErrorMsg] = useState('')
   
-  async function handleDeleteRegister(e: Event & {
-    currentTarget: any
-  }) {
-
-    e.preventDefault()
-    if (errorMsg) setErrorMsg('')
-
-    const body = {
-      username: e.currentTarget,
-      id: e.currentTarget,
-    }
-
-    console.log(e.currentTarget)
-
-  //  try {
-  //   const res = await fetch(apiLink + '/api/', {
-  //     method: 'POST',
-  //      headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify(body),
-  //       credentials: 'include'
-  //     })
-  //     if (res.status === 200) {
-  //      Router.reload()
-
-  //     } else {
-  //       throw new Error(await res.text())
-  //     }
-  //   } catch (error: any) {
-  //     console.error('An unexpected error happened occurred:', error)
-  //     setErrorMsg(error.message)
-  //   }
-    
-  // 
-}
+  
 
 
   return (
@@ -64,8 +31,8 @@ export default function Home() {
           <div className='grid col-span-2'>
             <UserPainel {...user}/>
           </div>
-          <Card className='flex justify-center grid col-span-5 pt-5'>
-            <Registers {...user} onClick={handleDeleteRegister}/>
+          <Card className='justify-center col-span-5  p-5'>
+            <Registers {...user} />
           </Card>
 
           <div className='grid col-span-2'>

@@ -26,7 +26,7 @@ export default function RegistersByType (props: any) {
 
     carregaRegistros()
   }, [props.username])
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+  const COLORS = ['#FA4343', '#0088FE'];
 
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }: any) => {
@@ -89,25 +89,3 @@ export default function RegistersByType (props: any) {
   )
 }
 
-export async function getRegistersGroupByCategory({ data }: any) {
-  try {
-    const res = await fetch(apiLink + '/api/getRegistersGroupByCategory', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-      credentials: 'include'
-    })
-    if (res.status === 200) {
-
-      Router.push('/')
-      const registros = await res.json()
-      return registros;
-    } else {
-      throw new Error(await res.text())
-    }
-  } catch (error: any) {
-    console.error('An unexpected error happened occurred:', error)
-
-  }
-
-}
