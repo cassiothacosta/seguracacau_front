@@ -46,6 +46,10 @@
       "sucessMsg": "Success on adding the register",
       "errorMsg": "Error on adding the register",
       "unexError": "An unexpected error happened occurred:",
+      "deleteValues": "Delete Registers",
+      "confirmDelete": "Please confirme deleting the registers",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
       "delete": "Delete"
     }
   }

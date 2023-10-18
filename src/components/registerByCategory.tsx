@@ -27,6 +27,22 @@ export default function RegistersByCategory(props: any) {
   }, [props.username])
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
+  async function carregaRegistros() {
+    const res = await fetch(apiLink + '/api/getRegistersGroupByCategory', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: props.username }),
+      credentials: 'include'
+    })
+
+    const registros = await res.json()
+    setRegistros(registros.data)
+  }
+
+  if(props.changed){
+    carregaRegistros()
+  }
+
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }: any) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
@@ -43,7 +59,7 @@ export default function RegistersByCategory(props: any) {
   return (
     <>
       { data[0] ? (
-        <div >
+        <div className='flex grid place-content-center'>
           <PieChart width={400} height={400}>
             <Pie
               data={data}

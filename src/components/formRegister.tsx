@@ -4,6 +4,11 @@ import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { useTranslation } from "next-i18next";
 
+enum periodicity  {
+  ESPORADICO = 'E',
+  MENSAL = 'M',
+  ANUAL = 'A'
+}
 
 
 
@@ -95,13 +100,13 @@ export default function FormRegister({ onSubmit }: any) {
         className="max-w-xs"
         name="period"
       >
-        <SelectItem key="esporadico" value="esporadico">
+        <SelectItem key="esporadico" value={periodicity.ESPORADICO}>
         {t('registerTable.sporadic')}
         </SelectItem>
-        <SelectItem key="mensal" value="mensal">
+        <SelectItem key="mensal" value={periodicity.MENSAL}>
         {t('registerTable.montly')}
         </SelectItem>
-        <SelectItem key="anual" value="anual">
+        <SelectItem key="anual" value={periodicity.ANUAL}>
         {t('registerTable.yearly')}
         </SelectItem>
       </Select>

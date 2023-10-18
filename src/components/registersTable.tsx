@@ -1,9 +1,9 @@
-import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Button, getKeyValue, Pagination, Spinner, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
-import { useAsyncList } from "@react-stately/data";
+import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Button, getKeyValue, Pagination, Input, Card } from "@nextui-org/react";
 import { format, parseISO } from "date-fns";
 import { useTranslation } from "next-i18next";
-import React, { useCallback, useState } from "react";
+import React from "react";
 import { ToastContainer } from "react-toastify";
+
 
 function formatDate(dateString: any) {
   const date = parseISO(dateString);
@@ -11,10 +11,9 @@ function formatDate(dateString: any) {
 }
 
 export default function RegistersTable(this: any, tableData: any) {
-  tableData = Array.from(tableData.data)
+  
   const { t } = useTranslation('common')
-
-  const [renderData, setRenderedData] = React.useState(tableData)
+  tableData = Array.from(tableData.data)
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]))
   const [filterValue, setFilterValue] = React.useState("");
   const [rowsPerPage, setRowsPerPage] = React.useState(15);
@@ -27,7 +26,7 @@ export default function RegistersTable(this: any, tableData: any) {
   });
 
   const filteredItems = React.useMemo(() => {
-    let filteredRegisters = renderData;
+    let filteredRegisters = tableData;
 
     if (hasSearchFilter) {
       filteredRegisters = filteredRegisters.filter((register: any) =>
@@ -36,7 +35,7 @@ export default function RegistersTable(this: any, tableData: any) {
     }
 
     return filteredRegisters;
-  }, [renderData, hasSearchFilter, filterValue]);
+  }, [tableData, hasSearchFilter, filterValue]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -219,7 +218,6 @@ export default function RegistersTable(this: any, tableData: any) {
         {bodyContent}
         
       </Table>
-      
     </>
   )
 }

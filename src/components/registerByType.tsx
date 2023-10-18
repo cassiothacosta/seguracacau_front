@@ -11,6 +11,18 @@ export default function RegistersByType (props: any) {
   const [data, setRegistros] = useState([])
   const emptyData = [{ name: 'Empty', value: 1 }, { name: 'Empty', value: 2 }, { name: 'Empty', value: 3 }]
 
+  async function carregaRegistros() {
+    const res = await fetch(apiLink + '/api/getRegistersGroupByType', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: props.username }),
+      credentials: 'include'
+    })
+
+    const registros = await res.json()
+    setRegistros(registros.data)
+  }
+
   useEffect(() => {
     async function carregaRegistros() {
       const res = await fetch(apiLink + '/api/getRegistersGroupByType', {
@@ -27,6 +39,12 @@ export default function RegistersByType (props: any) {
     carregaRegistros()
   }, [props.username])
   const COLORS = ['#FA4343', '#0088FE'];
+
+ 
+if(props.changed){
+  carregaRegistros()
+}
+  
 
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }: any) => {

@@ -46,6 +46,10 @@
       "sucessMsg": "Sucesso ao adicionar o registro",
       "errorMsg": "Erro ao Adicionar o Registro",
       "unexError": "Um erro inesperado aconteceu:",
+      "deleteValues": "Excluir Registros",
+      "confirmDelete": "Por favor, confirme a exclusão dos registros",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar",
       "delete": "Excluir"
     }
   }
