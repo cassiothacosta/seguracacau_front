@@ -24,18 +24,13 @@ export default function Registers(props: any) {
 
   const [data, setRegistros] = useState([])
   const [visible, setVisible] = React.useState(false);
-  const [visibleDelete, setVisibleDelete] = React.useState(false);
+
   const [changed, setChanged] = React.useState(false);
   const handler = () => setVisible(true);
-  const handlerDelete = () => setVisibleDelete(true);
+
 
   const closeHandler = () => {
     setVisible(false);
-    console.log("closed");
-  };
-
-  const closeHandlerDelete = () => {
-    setVisibleDelete(false);
     console.log("closed");
   };
 
@@ -112,22 +107,17 @@ export default function Registers(props: any) {
   async function handleDeleteSubmit(e: Event & {
     currentTarget: any
   }) {
-
-    e.preventDefault()
     if (errorMsg) setErrorMsg('')
     if (successMessage) setSuccessMsg('')
 
-    console.log(e.currentTarget)
+    let selectValues: any = []
+    for (const item in e.currentTarget.selectedKeys.options) selectValues.push(e.currentTarget.selectedKeys.options[item].value)
     const body = {
       username: props.username,
-      selectedKeys: e.currentTarget.elements.name.value,
-      type: e.currentTarget.elements.type.value,
-      category: e.currentTarget.elements.category.value,
-      period: e.currentTarget.elements.period.value,
-      value: e.currentTarget.elements.value.value,
+      selectedKeys: selectValues
     }
     try {
-      await addRegisters({ body }).then((response: any) => {
+      await removeRegisters({ body }).then((response: any) => {
         if (response.status == 200) {
           setSuccessMsg(t('registerTable.sucessMsg'))
           setTimeout(() => {
@@ -161,39 +151,15 @@ export default function Registers(props: any) {
           </ModalContent>
         </Modal>
 
-        <Modal closeButton
-          aria-labelledby="modal-title"
-          isOpen={visibleDelete}
-          onOpenChange={closeHandlerDelete}>
-          <ModalContent>
-            <form onSubmit={handleDeleteSubmit as any} className='grid grid-rows-2 grid-cols-1 gap-5 p-10'>
-              <div className='flex grid content-center justify-center'>
-                {t('registerTable.confirmDelete')}
-              </div>
-              <div className='grid grid-cols-2 gap-5'>
-              <Button color="danger" type='submit'>
-                {t('registerTable.confirm')}
-              </Button>
-              <Button color="primary" onPress={closeHandlerDelete}>
-                {t('registerTable.cancel')}
-              </Button>
-              </div>
-            </form>
-          </ModalContent>
-        </Modal>
-
         {data[0] ?
           <div className='flex justify-items-center grid'>
             <div className="justify-self-end grid grid-cols-2 gap-3">
               <Button color="primary" onPress={handler} endContent={<PlusIcon />}>
                 {t('registerTable.addValue')}
               </Button>
-              <Button color="warning" onPress={handlerDelete} endContent={<TrashIcon />}>
-                {t('registerTable.deleteValues')}
-              </Button>
             </div>
             <div className='w-[100%] h-[100%] content-top'>
-              <RegistersTable {...{ data }} />
+              <RegistersTable tableData={data} onSubmit={handleDeleteSubmit}/>
             </div>
           </div> :
 
@@ -256,10 +222,11 @@ export async function addRegisters({ body }: any) {
     console.error('An unexpected error happened occurred:', error)
 
   }
+}
 
-  async function removeRegisters({ body }: any) {
+export async function removeRegisters({ body }: any) {
     try {
-      const res = await fetch(apiLink + '/api/removeRegisters', {
+      const res = await fetch(apiLink + '/api/deleteRegister', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -270,6 +237,6 @@ export async function addRegisters({ body }: any) {
       console.error('An unexpected error happened occurred:', error)
 
     }
-  }
-
 }
+
+

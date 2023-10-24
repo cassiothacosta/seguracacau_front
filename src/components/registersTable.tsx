@@ -1,8 +1,10 @@
-import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Button, getKeyValue, Pagination, Input, Card } from "@nextui-org/react";
+import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Button, getKeyValue, Pagination, Input, Card, Modal, ModalContent, Select, SelectItem } from "@nextui-org/react";
 import { format, parseISO } from "date-fns";
 import { useTranslation } from "next-i18next";
 import React from "react";
+import { TrashIcon } from "./TrashIcon"
 import { ToastContainer } from "react-toastify";
+import { Periodicity } from "./enums"
 
 
 function formatDate(dateString: any) {
@@ -10,10 +12,9 @@ function formatDate(dateString: any) {
   return <time dateTime={dateString}>{format(date, 'LLLL d, yyyy')}</time>;
 }
 
-export default function RegistersTable(this: any, tableData: any) {
-  
+export default function RegistersTable({ tableData, onSubmit }: any) {
+
   const { t } = useTranslation('common')
-  tableData = Array.from(tableData.data)
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]))
   const [filterValue, setFilterValue] = React.useState("");
   const [rowsPerPage, setRowsPerPage] = React.useState(15);
@@ -97,10 +98,52 @@ export default function RegistersTable(this: any, tableData: any) {
     setPage(1)
   }, [])
 
+  const [visibleDelete, setVisibleDelete] = React.useState(false);
+  const handlerDelete = () => setVisibleDelete(true);
+
+  const closeHandlerDelete = () => {
+    setVisibleDelete(false);
+    console.log("closed");
+  };
 
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
+        <div className="justify-self-end grid grid-cols-2 gap-3">
+          <Button color="warning" onPress={handlerDelete} endContent={<TrashIcon />}>
+            {t('registerTable.deleteValues')}
+          </Button>
+        </div>
+        <Modal closeButton
+          aria-labelledby="modal-title"
+          isOpen={visibleDelete}
+          onOpenChange={closeHandlerDelete}>
+          <ModalContent>
+            <form onSubmit={onSubmit} className='grid grid-rows-2 grid-cols-1 gap-5 p-10'>
+              <Select aria-label='registers' name='selectedKeys' selectionMode="multiple" hidden>
+                {Array.from(selectedKeys).map((key: any) => (
+                  <SelectItem key={key} value={key}>
+                    {key}
+                  </SelectItem>
+                ))}
+
+              </Select>
+
+              <div className='flex grid content-center justify-center'>
+                {t('registerTable.confirmDelete')}
+              </div>
+              <div className='grid grid-cols-2 gap-5'>
+                <Button color="danger" type='submit'>
+                  {t('registerTable.confirm')}
+                </Button>
+                <Button color="primary" onPress={closeHandlerDelete}>
+                  {t('registerTable.cancel')}
+                </Button>
+              </div>
+            </form>
+          </ModalContent>
+        </Modal>
+
         <div className="flex justify-between gap-3 items-end">
           <Input
             isClearable
@@ -130,7 +173,7 @@ export default function RegistersTable(this: any, tableData: any) {
         </div>
       </div>
     );
-  }, [filterValue, onSearchChange, sortedItems.length, t, onRowsPerPageChange, onClear]);
+  }, [t, visibleDelete, onSubmit, selectedKeys, filterValue, onSearchChange, sortedItems.length, onRowsPerPageChange, onClear]);
 
   const bottomContent = React.useMemo(() => {
     return (
@@ -174,18 +217,20 @@ export default function RegistersTable(this: any, tableData: any) {
 
               <TableCell className="text-rose-500">{formatDate(getKeyValue(item, columnKey))}</TableCell> : columnKey == 'value' ?
                 <TableCell className="text-rose-500">{Number(getKeyValue(item, columnKey)).toLocaleString('pt-br', { style: "currency", currency: "BRL" })}</TableCell> :
-                <TableCell className="text-rose-500">{getKeyValue(item, columnKey)}</TableCell>
+                columnKey == 'period' ? <TableCell className="text-rose-500">{t('registerTable.' + String(item.period == 'E' ? Periodicity.E : item.period == 'M' ? Periodicity.M : Periodicity.A))}</TableCell> :
+                  <TableCell className="text-rose-500">{getKeyValue(item, columnKey)}</TableCell>
             ) : (columnKey == 'createdAt' ?
 
               <TableCell className="text-green-500">{formatDate(getKeyValue(item, columnKey))}</TableCell> : columnKey == 'value' ?
                 <TableCell className="text-green-500">{Number(getKeyValue(item, columnKey)).toLocaleString('pt-br', { style: "currency", currency: "BRL" })}</TableCell> :
-                <TableCell className="text-green-500">{getKeyValue(item, columnKey)}</TableCell>)
+                columnKey == 'period' ? (<TableCell className="text-green-500">{t('registerTable.' + String(item.period == 'E' ? Periodicity.E : item.period == 'M' ? Periodicity.M : Periodicity.A))}</TableCell>) :
+                  <TableCell className="text-green-500">{getKeyValue(item, columnKey)}</TableCell>)
             }
           </TableRow>
         )}
       </TableBody>
     );
-  }, [sortedItems])
+  }, [sortedItems, t])
 
   return (
     <>
@@ -216,8 +261,9 @@ export default function RegistersTable(this: any, tableData: any) {
         </TableHeader>
 
         {bodyContent}
-        
+
       </Table>
+      <ToastContainer />
     </>
   )
 }
