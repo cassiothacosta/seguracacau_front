@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Input, Button, ModalFooter, Select, SelectItem, ModalHeader } from '@nextui-org/react'
 import React, { useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
 import { useTranslation } from "next-i18next";
 
 enum periodicity  {
@@ -96,17 +95,17 @@ export default function FormRegister({ onSubmit }: any) {
       <Select
         label= {t('registerTable.choosePeriod')}
         placeholder= {t('registerTable.sporadic')}
-        defaultSelectedKeys={["esporadico"]}
+        defaultSelectedKeys={[periodicity.ESPORADICO]}
         className="max-w-xs"
         name="period"
       >
-        <SelectItem key="esporadico" value={periodicity.ESPORADICO}>
+        <SelectItem  key={periodicity.ESPORADICO}>
         {t('registerTable.sporadic')}
         </SelectItem>
-        <SelectItem key="mensal" value={periodicity.MENSAL}>
+        <SelectItem  key={periodicity.MENSAL}>
         {t('registerTable.montly')}
         </SelectItem>
-        <SelectItem key="anual" value={periodicity.ANUAL}>
+        <SelectItem  key={periodicity.ANUAL}>
         {t('registerTable.yearly')}
         </SelectItem>
       </Select>
@@ -137,7 +136,6 @@ export default function FormRegister({ onSubmit }: any) {
         {t('registerTable.send')}
         </Button>
       </ModalFooter>
-      <ToastContainer />
     </form>
   )
 }

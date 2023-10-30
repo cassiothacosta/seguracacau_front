@@ -6,7 +6,7 @@ import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 
 const apiLink = process.env.BACKEND_API
 
-export default function RegistersByType (props: any) {
+export default function RegistersByType ({username, changed, setChanged}: any) {
 
   const [data, setRegistros] = useState([])
   const emptyData = [{ name: 'Empty', value: 1 }, { name: 'Empty', value: 2 }, { name: 'Empty', value: 3 }]
@@ -15,12 +15,13 @@ export default function RegistersByType (props: any) {
     const res = await fetch(apiLink + '/api/getRegistersGroupByType', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: props.username }),
+      body: JSON.stringify({ username: username }),
       credentials: 'include'
     })
 
     const registros = await res.json()
     setRegistros(registros.data)
+    setChanged(false)
   }
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export default function RegistersByType (props: any) {
       const res = await fetch(apiLink + '/api/getRegistersGroupByType', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: props.username }),
+        body: JSON.stringify({ username: username }),
         credentials: 'include'
       })
 
@@ -37,12 +38,14 @@ export default function RegistersByType (props: any) {
     }
 
     carregaRegistros()
-  }, [props.username])
+    
+  }, [username])
   const COLORS = ['#FA4343', '#0088FE'];
 
  
-if(props.changed){
+if(changed){
   carregaRegistros()
+  setChanged(false)
 }
   
 

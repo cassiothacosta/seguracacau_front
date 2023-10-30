@@ -3,8 +3,9 @@ import { format, parseISO } from "date-fns";
 import { useTranslation } from "next-i18next";
 import React from "react";
 import { TrashIcon } from "./TrashIcon"
-import { ToastContainer } from "react-toastify";
 import { Periodicity } from "./enums"
+import { PlusIcon } from "./PlusIcon";
+import Form from './formRegister'
 
 
 function formatDate(dateString: any) {
@@ -12,7 +13,7 @@ function formatDate(dateString: any) {
   return <time dateTime={dateString}>{format(date, 'LLLL d, yyyy')}</time>;
 }
 
-export default function RegistersTable({ tableData, onSubmit }: any) {
+export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any) {
 
   const { t } = useTranslation('common')
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]))
@@ -99,41 +100,48 @@ export default function RegistersTable({ tableData, onSubmit }: any) {
   }, [])
 
   const [visibleDelete, setVisibleDelete] = React.useState(false);
-  const handlerDelete = () => setVisibleDelete(true);
+  const [visible, setVisible] = React.useState(false);
 
   const closeHandlerDelete = () => {
     setVisibleDelete(false);
     console.log("closed");
   };
 
+  const handler = () => setVisible(true);
+
+  const closeHandler = () => {
+    setVisible(false);
+    console.log("closed");
+  };
+
+
   const topContent = React.useMemo(() => {
+
+    const handlerDelete = () => selectedKeys.size > 0 && setVisibleDelete(true);
+
     return (
       <div className="flex flex-col gap-4">
-        <div className="justify-self-end grid grid-cols-2 gap-3">
-          <Button color="warning" onPress={handlerDelete} endContent={<TrashIcon />}>
-            {t('registerTable.deleteValues')}
-          </Button>
-        </div>
         <Modal closeButton
           aria-labelledby="modal-title"
           isOpen={visibleDelete}
           onOpenChange={closeHandlerDelete}>
           <ModalContent>
             <form onSubmit={onSubmit} className='grid grid-rows-2 grid-cols-1 gap-5 p-10'>
-              <Select aria-label='registers' name='selectedKeys' selectionMode="multiple" hidden>
-                {Array.from(selectedKeys).map((key: any) => (
-                  <SelectItem key={key} value={key}>
-                    {key}
-                  </SelectItem>
-                ))}
-
-              </Select>
+              <div hidden>
+                <Select aria-label='registers' name='selectedKeys' selectionMode="multiple">
+                  {Array.from(selectedKeys).map((key: any) => (
+                    <SelectItem key={key} value={key}>
+                      {key}
+                    </SelectItem>
+                  ))}
+                </Select>
+              </div>
 
               <div className='flex grid content-center justify-center'>
                 {t('registerTable.confirmDelete')}
               </div>
               <div className='grid grid-cols-2 gap-5'>
-                <Button color="danger" type='submit'>
+                <Button color="danger" onPress={closeHandlerDelete} type="submit">
                   {t('registerTable.confirm')}
                 </Button>
                 <Button color="primary" onPress={closeHandlerDelete}>
@@ -141,6 +149,16 @@ export default function RegistersTable({ tableData, onSubmit }: any) {
                 </Button>
               </div>
             </form>
+          </ModalContent>
+        </Modal>
+
+        <Modal closeButton
+          aria-labelledby="modal-title"
+          isOpen={visible}
+          onOpenChange={closeHandler}>
+
+          <ModalContent>
+            <Form onSubmit={onSubmitAdd} />
           </ModalContent>
         </Modal>
 
@@ -154,12 +172,26 @@ export default function RegistersTable({ tableData, onSubmit }: any) {
             onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
+          <div className="flex gap-3">
+            <div className="flex grid content-center justify-end">
+              <Button color="warning" onPress={handlerDelete} endContent={<TrashIcon />}>
+                {t('registerTable.deleteValues')}
+              </Button>
+            </div>
+            <div className="flex grid content-center justify-end">
+              <Button color="primary" onPress={handler} endContent={<PlusIcon />}>
+                {t('registerTable.addValue')}
+              </Button>
+            </div>
+
+
+          </div>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">Total {sortedItems.length} {t("registers")}</span>
           <label className="flex items-center text-default-400 text-small">
             {t("rowsperpage")}
-            <select
+            <select name="rowsperpage"
               className="bg-transparent outline-none text-default-400 text-small"
               onChange={onRowsPerPageChange}
             >
@@ -173,7 +205,7 @@ export default function RegistersTable({ tableData, onSubmit }: any) {
         </div>
       </div>
     );
-  }, [t, visibleDelete, onSubmit, selectedKeys, filterValue, onSearchChange, sortedItems.length, onRowsPerPageChange, onClear]);
+  }, [visibleDelete, onSubmit, selectedKeys, t, visible, onSubmitAdd, filterValue, onSearchChange, sortedItems.length, onRowsPerPageChange, onClear]);
 
   const bottomContent = React.useMemo(() => {
     return (
@@ -263,7 +295,6 @@ export default function RegistersTable({ tableData, onSubmit }: any) {
         {bodyContent}
 
       </Table>
-      <ToastContainer />
     </>
   )
 }

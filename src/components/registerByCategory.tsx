@@ -5,7 +5,7 @@ import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 
 const apiLink = process.env.BACKEND_API
 
-export default function RegistersByCategory(props: any) {
+export default function RegistersByCategory({username, changed, setChanged}: any) {
 
   const [data, setRegistros] = useState([])
   const emptyData = [{ name: 'Empty', value: 1 }, { name: 'Empty', value: 2 }, { name: 'Empty', value: 3 }]
@@ -15,7 +15,7 @@ export default function RegistersByCategory(props: any) {
       const res = await fetch(apiLink + '/api/getRegistersGroupByCategory', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: props.username }),
+        body: JSON.stringify({ username: username }),
         credentials: 'include'
       })
 
@@ -24,24 +24,25 @@ export default function RegistersByCategory(props: any) {
     }
 
     carregaRegistros()
-  }, [props.username])
+  }, [username])
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
   async function carregaRegistros() {
     const res = await fetch(apiLink + '/api/getRegistersGroupByCategory', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: props.username }),
+      body: JSON.stringify({ username: username }),
       credentials: 'include'
     })
 
     const registros = await res.json()
     setRegistros(registros.data)
+    setChanged(false)
   }
 
-  if(props.changed){
+  if(changed){
     carregaRegistros()
-  }
+   }
 
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }: any) => {

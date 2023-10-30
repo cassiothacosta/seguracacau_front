@@ -107,6 +107,8 @@ export default function Registers(props: any) {
   async function handleDeleteSubmit(e: Event & {
     currentTarget: any
   }) {
+
+    e.preventDefault()
     if (errorMsg) setErrorMsg('')
     if (successMessage) setSuccessMsg('')
 
@@ -116,17 +118,17 @@ export default function Registers(props: any) {
       username: props.username,
       selectedKeys: selectValues
     }
+
     try {
       await removeRegisters({ body }).then((response: any) => {
         if (response.status == 200) {
-          setSuccessMsg(t('registerTable.sucessMsg'))
+          setSuccessMsg(t('registerTable.sucessDeleteMsg'))
           setTimeout(() => {
             notifySuccess(successMessage)
-          }, 100)
-          carregaRegistros()
-          setChanged(true)
+            carregaRegistros()
+          }, 10);
         } else {
-          setErrorMsg(t('registerTable.errorMsg') + response.text())
+          setErrorMsg(t('registerTable.errorDeleteMsg') + response.text())
           notify(errorMsg)
           throw new Error(response.text())
         }
@@ -153,13 +155,8 @@ export default function Registers(props: any) {
 
         {data[0] ?
           <div className='flex justify-items-center grid'>
-            <div className="justify-self-end grid grid-cols-2 gap-3">
-              <Button color="primary" onPress={handler} endContent={<PlusIcon />}>
-                {t('registerTable.addValue')}
-              </Button>
-            </div>
             <div className='w-[100%] h-[100%] content-top'>
-              <RegistersTable tableData={data} onSubmit={handleDeleteSubmit}/>
+              <RegistersTable tableData={data} onSubmit={handleDeleteSubmit} onSubmitAdd={handleSubmit}/>
             </div>
           </div> :
 
@@ -189,22 +186,20 @@ export default function Registers(props: any) {
             <ToastContainer />
           </div>
         }
-
       </div>
     </Card>
 
     <Card className='grid col-span-3 pt-5'>
       <div className='text-center'>
         {t('graph1')}
-        <RegistersByType {...props} changed={changed} />
+        <RegistersByType username={props.username} changed={changed} setChanged={setChanged}/>
       </div>
       <div className='text-center'>
         {t('graph2')}
-        <RegistersByCategory {...props} changed={changed} />
+        <RegistersByCategory username={props.username} changed={changed} setChanged={setChanged}/>
       </div>
 
     </Card>
-
   </div>
   )
 }
@@ -225,18 +220,18 @@ export async function addRegisters({ body }: any) {
 }
 
 export async function removeRegisters({ body }: any) {
-    try {
-      const res = await fetch(apiLink + '/api/deleteRegister', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-        credentials: 'include'
-      })
-      return res
-    } catch (error: any) {
-      console.error('An unexpected error happened occurred:', error)
+  try {
+    const res = await fetch(apiLink + '/api/deleteRegister', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      credentials: 'include'
+    })
+    return res
+  } catch (error: any) {
+    console.error('An unexpected error happened occurred:', error)
 
-    }
+  }
 }
 
 
