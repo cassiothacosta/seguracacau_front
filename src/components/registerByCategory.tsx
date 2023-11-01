@@ -37,7 +37,9 @@ export default function RegistersByCategory({username, changed, setChanged}: any
 
     const registros = await res.json()
     setRegistros(registros.data)
-    setChanged(false)
+    setTimeout(() => {
+      setChanged(false)
+    }, 20)
   }
 
   if(changed){

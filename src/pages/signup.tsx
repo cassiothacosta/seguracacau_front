@@ -35,7 +35,7 @@ const Signup = () => {
       const res = await fetch(apiLink + '/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': 'http://localhost:3000'},
+        'Access-Control-Allow-Origin': apiLink as string},
         body: JSON.stringify(body),
       })
       if (res.status === 200) {

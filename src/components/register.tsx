@@ -8,8 +8,6 @@ import React from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { useTranslation } from "next-i18next";
-import { PlusIcon } from "./PlusIcon";
-import { TrashIcon } from "./TrashIcon"
 import RegistersByCategory from './registerByCategory'
 import RegistersByType from './registerByType'
 
@@ -126,6 +124,7 @@ export default function Registers(props: any) {
           setTimeout(() => {
             notifySuccess(successMessage)
             carregaRegistros()
+            setChanged(true)
           }, 10);
         } else {
           setErrorMsg(t('registerTable.errorDeleteMsg') + response.text())
@@ -140,8 +139,9 @@ export default function Registers(props: any) {
   }
 
 
-  return (<div className='grid grid-cols-9 gap-5'>
-    <Card className='col-span-6 p-5'>
+  return (
+  <div className='grid grid-cols-8 gap-5'>
+    <Card className='col-span-6 p-5' >
       <div className='grid w-[100%] h-[100%] '>
         <Modal closeButton
           aria-labelledby="modal-title"
@@ -153,43 +153,16 @@ export default function Registers(props: any) {
           </ModalContent>
         </Modal>
 
-        {data[0] ?
+     
           <div className='flex justify-items-center grid'>
             <div className='w-[100%] h-[100%] content-top'>
               <RegistersTable tableData={data} onSubmit={handleDeleteSubmit} onSubmitAdd={handleSubmit}/>
             </div>
-          </div> :
-
-          <div className='flex grid grid-rows-4'>
-            <Button className='absolute grid justify-end row-span-1' color='primary' onPress={handler} endContent={<PlusIcon />}>
-              {t('registerTable.addValue')}
-            </Button>
-            <Spacer x={1} />
-            <div className='flex grid row-span-2'>
-              <Table
-                aria-label="Example table with static content"
-              >
-                <TableHeader>
-                  <TableColumn className="uppercase">{t('registerTable.name')}</TableColumn>
-                  <TableColumn className="uppercase">{t('registerTable.type')}</TableColumn>
-                  <TableColumn className="uppercase">{t('registerTable.category')}</TableColumn>
-                  <TableColumn className="uppercase">{t('registerTable.period')}</TableColumn>
-                  <TableColumn className="uppercase">{t('registerTable.value')}</TableColumn>
-                  <TableColumn className="uppercase">{t('registerTable.added')}</TableColumn>
-                  <TableColumn hidden >ID</TableColumn>
-                </TableHeader>
-
-                <TableBody emptyContent={"No registers found"}>
-                </TableBody>
-              </Table>
-            </div>
-            <ToastContainer />
           </div>
-        }
       </div>
     </Card>
 
-    <Card className='grid col-span-3 pt-5'>
+    <Card className='grid col-span-2 pt-5'>
       <div className='text-center'>
         {t('graph1')}
         <RegistersByType username={props.username} changed={changed} setChanged={setChanged}/>

@@ -21,7 +21,9 @@ export default function RegistersByType ({username, changed, setChanged}: any) {
 
     const registros = await res.json()
     setRegistros(registros.data)
-    setChanged(false)
+    setTimeout(() => {
+      setChanged(false)
+    }, 20)
   }
 
   useEffect(() => {
