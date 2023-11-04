@@ -73,7 +73,7 @@ export default function RegistersByType({ username, changed, setChanged }: any) 
 
   return (
     <>
-      {data[0] ? (
+      {data && data[0] ? (
         <div className='flex grid place-content-center'>
           <PieChart width={400} height={400}>
             <Pie
@@ -86,7 +86,7 @@ export default function RegistersByType({ username, changed, setChanged }: any) 
               fill="#8884d8"
               dataKey="value"
             >
-              {data.map((entry, index) => (
+              {data && data.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
@@ -106,7 +106,7 @@ export default function RegistersByType({ username, changed, setChanged }: any) 
               fill="#8884d8"
               dataKey="value"
             >
-              {data.map((entry, index) => (
+              {emptyData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>

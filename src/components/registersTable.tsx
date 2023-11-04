@@ -56,7 +56,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
     return filteredRegisters;
   }, [tableData, hasSearchFilter, filterValue]);
 
-  const pages = filteredItems.length > 0 ? Math.ceil(filteredItems.length / rowsPerPage) : 1;
+  const pages = filteredItems && filteredItems.length > 0 ? Math.ceil(filteredItems.length / rowsPerPage) : 1;
 
 
   const onNextPage = React.useCallback(() => {
@@ -74,12 +74,12 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
-    return filteredItems.slice(start, end);
+    return filteredItems && filteredItems.slice(start, end);
   }, [page, rowsPerPage, filteredItems]);
 
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: any, b: any) => {
+    return items && [...items].sort((a: any, b: any) => {
       const first = sortDescriptor.column == "value" ? Number(a[sortDescriptor.column as keyof any]) as number : a[sortDescriptor.column as keyof any] as number;
       const second = sortDescriptor.column == "value" ? Number(b[sortDescriptor.column as keyof any]) as number : b[sortDescriptor.column as keyof any] as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
@@ -195,7 +195,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
 
           </div>
           <div className="lg:flex justify-between items-center">
-            <span className="text-default-400 text-small">Total {sortedItems.length} {t("registers")}</span>
+            <span className="text-default-400 text-small">Total {sortedItems ? sortedItems.length : 0} {t("registers")}</span>
             <label className="flex items-center text-default-400 text-small">
               {t("rowsperpage")}
               <select name="rowsperpage"
@@ -214,7 +214,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
 
       </div>
     );
-  }, [visibleDelete, onSubmit, selectedKeys, t, visible, onSubmitAdd, filterValue, onSearchChange, sortedItems.length, onRowsPerPageChange, onClear]);
+  }, [visibleDelete, onSubmit, selectedKeys, t, visible, onSubmitAdd, filterValue, onSearchChange, sortedItems, onRowsPerPageChange, onClear]);
 
   const bottomContent = React.useMemo(() => {
     return (
@@ -222,7 +222,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
         <span className="w-[30%] text-small text-default-400">
           {selectedKeys === "all"
             ? "All items selected"
-            : `${selectedKeys.size} of ${filteredItems.length} selected`}
+            : `${selectedKeys.size} of ${filteredItems && filteredItems.length} selected`}
         </span>
         <Pagination
           isCompact
@@ -244,7 +244,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
         </div>
       </div>
     );
-  }, [selectedKeys, filteredItems.length, page, pages, onPreviousPage, onNextPage]);
+  }, [selectedKeys, filteredItems, page, pages, onPreviousPage, onNextPage]);
 
   const bodyContent = React.useMemo(() => {
 
@@ -252,7 +252,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
       <TableBody
         className="h-full overflow-x"
         emptyContent={"No registers found"}
-        items={sortedItems}
+        items={sortedItems ? sortedItems : []}
       >
         {(item: any) => (
           <TableRow key={item.id}>
