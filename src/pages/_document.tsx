@@ -9,6 +9,7 @@ export default function Document(this: any) {
   return (
     <Html lang={currentLocale}>
       <Head />
+     
       <body className='bg-background text-foreground'>
         <Main />
         <NextScript />

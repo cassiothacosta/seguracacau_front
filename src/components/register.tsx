@@ -14,7 +14,7 @@ import RegistersByType from './registerByType'
 
 const apiLink = process.env.BACKEND_API
 
-export default function Registers(props: any) {
+export default function Registers({user, handlePageTitle}: any) {
   const { t } = useTranslation('common')
 
   const notify = (errorMessage: any) => toast.error(errorMessage);
@@ -37,22 +37,22 @@ export default function Registers(props: any) {
       const res = await fetch(apiLink + '/api/getRegisters', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: props.username }),
+        body: JSON.stringify({ username: user.username }),
         credentials: 'include'
       })
 
       const registros = await res.json()
       setRegistros(registros.data)
     }
-
+    handlePageTitle(t('registersPage'))
     carregaRegistros()
-  }, [props.username])
+  }, [handlePageTitle, t, user.username])
 
   async function carregaRegistros() {
     const res = await fetch(apiLink + '/api/getRegisters', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: props.username }),
+      body: JSON.stringify({ username: user.username }),
       credentials: 'include'
     })
 
@@ -74,7 +74,7 @@ export default function Registers(props: any) {
 
     console.log(e.currentTarget)
     const body = {
-      username: props.username,
+      username: user.username,
       name: e.currentTarget.elements.name.value,
       type: e.currentTarget.elements.type.value,
       category: e.currentTarget.elements.category.value,
@@ -84,20 +84,20 @@ export default function Registers(props: any) {
     try {
       await addRegisters({ body }).then((response: any) => {
         if (response.status == 200) {
-          setSuccessMsg(t('registerTable.sucessMsg'))
+          setSuccessMsg(t('sucessMsg'))
           setTimeout(() => {
             notifySuccess(successMessage)
           }, 100)
           carregaRegistros()
           setChanged(true)
         } else {
-          setErrorMsg(t('registerTable.errorMsg') + response.text())
+          setErrorMsg(t('errorMsg') + response.text())
           notify(errorMsg)
           throw new Error(response.text())
         }
       })
     } catch (error: any) {
-      console.error(t('registerTable.unexError'), error)
+      console.error(t('unexError'), error)
       setErrorMsg(error.message)
     }
   }
@@ -113,27 +113,27 @@ export default function Registers(props: any) {
     let selectValues: any = []
     for (const item in e.currentTarget.selectedKeys.options) selectValues.push(e.currentTarget.selectedKeys.options[item].value)
     const body = {
-      username: props.username,
+      username: user.username,
       selectedKeys: selectValues
     }
 
     try {
       await removeRegisters({ body }).then((response: any) => {
         if (response.status == 200) {
-          setSuccessMsg(t('registerTable.sucessDeleteMsg'))
+          setSuccessMsg(t('sucessDeleteMsg'))
           setTimeout(() => {
             notifySuccess(successMessage)
             carregaRegistros()
             setChanged(true)
           }, 10);
         } else {
-          setErrorMsg(t('registerTable.errorDeleteMsg') + response.text())
+          setErrorMsg(t('errorDeleteMsg') + response.text())
           notify(errorMsg)
           throw new Error(response.text())
         }
       })
     } catch (error: any) {
-      console.error(t('registerTable.unexError'), error)
+      console.error(t('unexError'), error)
       setErrorMsg(error.message)
     }
   }
@@ -165,11 +165,11 @@ export default function Registers(props: any) {
     <Card className='grid col-span-2 pt-5'>
       <div className='text-center'>
         {t('graph1')}
-        <RegistersByType username={props.username} changed={changed} setChanged={setChanged}/>
+        <RegistersByType username={user.username} changed={changed} setChanged={setChanged}/>
       </div>
       <div className='text-center'>
         {t('graph2')}
-        <RegistersByCategory username={props.username} changed={changed} setChanged={setChanged}/>
+        <RegistersByCategory username={user.username} changed={changed} setChanged={setChanged}/>
       </div>
 
     </Card>

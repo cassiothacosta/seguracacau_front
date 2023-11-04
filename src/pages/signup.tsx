@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Router from 'next/router'
 import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
@@ -6,15 +6,22 @@ import Form from '../components/form'
 import {  toast } from 'react-toastify';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next';
+import { useTranslation } from 'next-i18next'
 
 
 const apiLink = process.env.BACKEND_API
 const notify = (errorMessage: any) => toast.error(errorMessage);
 const Signup = () => {
   useUser({ redirectTo: '/', redirectIfFound: true })
-
+  
+  const { t } = useTranslation('common')
   const [errorMsg, setErrorMsg] = useState('')
   const [successMessage, setSuccessMsg] = useState('')
+  const [pageTitle, setPageTitle] = useState<String>('')
+
+  useEffect(() =>{
+    setPageTitle(t('signupPage'))
+  },[t])
 
   async function handleSubmit(e: any) {
     e.preventDefault()
@@ -55,6 +62,7 @@ const Signup = () => {
 
   return (
     <Layout>
+      <title>{pageTitle}</title>
       <div className="login">
         <Form isLogin={false} errorMessage={errorMsg} successMessage={successMessage} onSubmit={handleSubmit} />
       </div>

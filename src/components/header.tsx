@@ -41,7 +41,7 @@ export default function Header() {
                   </DropdownTrigger>
                   <DropdownMenu variant="flat" aria-label="Dropdown menu with shortcut">
                     <DropdownItem key="ptbr" onClick={() => onToggleLanguageClick('ptbr') as any} className="br"><span className="fi fi-br"></span> PT-BR</DropdownItem>
-                    <DropdownItem key="new" onClick={() => onToggleLanguageClick('en') as any}><span className="fi fi-us"></span>EN-US</DropdownItem>
+                    <DropdownItem key="new" onClick={() => onToggleLanguageClick('en') as any}><span className="fi fi-us"></span> EN-US</DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
             </div>

@@ -1,23 +1,27 @@
 import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
-import { Avatar, Button, Card, Link, Listbox, ListboxItem } from '@nextui-org/react';
+import { Avatar, Card, Link, Listbox, ListboxItem } from '@nextui-org/react';
 import Registers from '../components/register'
 import Login from './login';
-import UserPainel from '@/components/userPainel';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next';
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react';
-import ReportsPainel from '@/components/reportsPainel';
+import { useEffect, useState } from 'react';
+import ReportsPanel from '@/components/reportsPanel';
 
 const apiLink = process.env.BACKEND_API
 
-export default function Home() {
+export default function Home(props: any) {
   const { t } = useTranslation('common')
   const user = useUser()
   const [errorMsg, setErrorMsg] = useState('')
   const [visibleRegisters, setVisibleRegisters] = useState(true)
   const [visibleReports, setVisibleReports] = useState(false)
+  const [pageTitle, setPageTitle] = useState<String>("")
+
+  useEffect(() => {
+    setPageTitle(t('startPage'))
+  }, [t])
 
   const handleOpenReports = () => {
     setVisibleRegisters(false);
@@ -29,25 +33,30 @@ export default function Home() {
     setVisibleReports(false)
   };
 
+const handlePageTitle = (newTitle: String) => {
+  setPageTitle(newTitle)
+}
+  
   return (
-    <Layout >
+    <Layout>
+      <title>{pageTitle}</title>
       {user ? (
         <div className='grid grid-cols-12 gap-5 w-[90%] h-[90%]'>
           <div className='grid col-span-2'>
             <Card className="flex gap-4 items-start p-10">
               <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026708c" className="w-20 h-20 text-large" />
-              <Listbox
+              <Listbox 
                 aria-label="Listbox Variants"
                 color='default'
                 variant='light'
               >
-                <ListboxItem key="reports" color="default" onPress={handleOpenReports}>
-                  Gerar Relatórios
+                <ListboxItem classNames={{title: "text-md"}} key="registers" color="default" onPress={handleOpenRegisters}>
+                  {t('showTable')}
                 </ListboxItem>
-                <ListboxItem key="registers" color="default" onPress={handleOpenRegisters}>
-                  Mostrar Tabela
+                <ListboxItem classNames={{title: "text-md"}} key="reports"  color="default" onPress={handleOpenReports}>
+                  {t('genReport')}
                 </ListboxItem>
-                <ListboxItem key="delete" className="text-danger" color="danger">
+                <ListboxItem classNames={{title: "text-md"}} key="delete" className="text-danger" color="danger">
                   <Link color="danger" href={apiLink + "/api/logout"}>
                     {t('logout')}
                   </Link>
@@ -56,14 +65,14 @@ export default function Home() {
             </Card>
           </div>
           <div className='grid col-span-10'>
-            {visibleRegisters && 
-              <Registers {...user} />
+            {visibleRegisters &&
+                <Registers user={user} handlePageTitle={handlePageTitle}/>
             }
             {
               visibleReports &&
-              <ReportsPainel {...user}/>
+                <ReportsPanel user={user} handlePageTitle={handlePageTitle}/>
             }
-            
+
           </div>
         </div>
       ) :

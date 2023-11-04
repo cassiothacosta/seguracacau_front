@@ -1,6 +1,8 @@
+import { useState } from "react"
 import Header from "./header"
 
 export default function Layout(props: any) {
+
   return (
   <>
     <Header />

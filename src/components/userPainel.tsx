@@ -1,7 +1,7 @@
 import { Avatar, Card, Link } from "@nextui-org/react";
 import { useTranslation } from "next-i18next";
 
-export default function UserPainel(props: any) {
+export default function UserPanel(props: any) {
     const { t } = useTranslation('common')
     return (
         <Card className="flex gap-4 items-start p-10">

@@ -6,9 +6,6 @@ import Form from '../components/form'
 import { Image } from '@nextui-org/react'
 import { useTranslation } from 'react-i18next'
 
-
-
-
 const apiLink = process.env.BACKEND_API
 
 const Login = () => {

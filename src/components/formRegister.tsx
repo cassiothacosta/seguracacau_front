@@ -39,12 +39,12 @@ export default function FormRegister({ onSubmit }: any) {
   return (
     <form onSubmit={onSubmit} className='grid gap-4 pl-5 pr-5'>
       <ModalHeader>
-        {t('registerTable.addValue')}
+        {t('addValue')}
       </ModalHeader>
       <Input
         isRequired
         aria-label='Nome'
-        label={t('registerTable.typeName')}
+        label={t('typeName')}
         isClearable
         variant='bordered'
         fullWidth
@@ -52,61 +52,61 @@ export default function FormRegister({ onSubmit }: any) {
         size="md"
         type="text"
         name="name"
-        placeholder={t('registerTable.name')}
+        placeholder={t('name')}
         labelPlacement="outside"
       />
 
       <Select
-        label={t('registerTable.chooseType')}
-        placeholder={t('registerTable.debit')}
+        label={t('chooseType')}
+        placeholder={t('debit')}
         defaultSelectedKeys={["despesa"]}
         className="max-w-xs"
         name="type"
       >
         <SelectItem key="despesa" value="despesa">
-          {t('registerTable.debit')}
+          {t('debit')}
         </SelectItem>
         <SelectItem key="receita" value="receita">
-          {t('registerTable.credit')}
+          {t('credit')}
         </SelectItem>
       </Select>
 
       <Select
-        label= {t('registerTable.chooseCategory')}
-        placeholder= {t('registerTable.house')}
+        label= {t('chooseCategory')}
+        placeholder= {t('house')}
         defaultSelectedKeys={["casa"]}
         className="max-w-xs"
         name="category"
       >
         <SelectItem key="casa" value="casa">
-        {t('registerTable.house')}
+        {t('house')}
         </SelectItem>
         <SelectItem key="compras" value="compras">
-        {t('registerTable.expenses')}
+        {t('expenses')}
         </SelectItem>
         <SelectItem key="telefone" value="telefone">
-        {t('registerTable.phone')}
+        {t('phone')}
         </SelectItem>
         <SelectItem key="ferias" value="ferias">
-        {t('registerTable.vacations')}
+        {t('vacations')}
         </SelectItem>
       </Select>
 
       <Select
-        label= {t('registerTable.choosePeriod')}
-        placeholder= {t('registerTable.sporadic')}
+        label= {t('choosePeriod')}
+        placeholder= {t('sporadic')}
         defaultSelectedKeys={[periodicity.ESPORADICO]}
         className="max-w-xs"
         name="period"
       >
         <SelectItem  key={periodicity.ESPORADICO}>
-        {t('registerTable.sporadic')}
+        {t('sporadic')}
         </SelectItem>
         <SelectItem  key={periodicity.MENSAL}>
-        {t('registerTable.montly')}
+        {t('montly')}
         </SelectItem>
         <SelectItem  key={periodicity.ANUAL}>
-        {t('registerTable.yearly')}
+        {t('yearly')}
         </SelectItem>
       </Select>
 
@@ -121,7 +121,7 @@ export default function FormRegister({ onSubmit }: any) {
         name="value" required
         type="number"
         step="0.01"
-        label={t('registerTable.typeValue')}
+        label={t('typeValue')}
         placeholder="0.00"
         labelPlacement="outside"
         endContent={
@@ -133,7 +133,7 @@ export default function FormRegister({ onSubmit }: any) {
 
       <ModalFooter>
         <Button  type="submit" color='primary'>
-        {t('registerTable.send')}
+        {t('send')}
         </Button>
       </ModalFooter>
     </form>

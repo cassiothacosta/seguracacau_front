@@ -1,11 +1,27 @@
-import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Button, getKeyValue, Pagination, Input, Card, Modal, ModalContent, Select, SelectItem } from "@nextui-org/react";
+import { Table, 
+  TableHeader, 
+  TableBody, 
+  TableColumn, 
+  TableRow, 
+  TableCell, 
+  Button, 
+  getKeyValue, 
+  Pagination, 
+  Input, 
+  Modal, 
+  ModalContent, 
+  Select, 
+  Selection, 
+  SelectItem, 
+  SortDescriptor } from "@nextui-org/react";
 import { format, parseISO } from "date-fns";
 import { useTranslation } from "next-i18next";
-import React from "react";
+import React, { useEffect } from "react";
 import { TrashIcon } from "./TrashIcon"
 import { Periodicity } from "./enums"
 import { PlusIcon } from "./PlusIcon";
 import Form from './formRegister'
+import moment from "moment";
 
 
 function formatDate(dateString: any) {
@@ -16,13 +32,12 @@ function formatDate(dateString: any) {
 export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any) {
 
   const { t } = useTranslation('common')
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set([]))
+  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]));
   const [filterValue, setFilterValue] = React.useState("");
   const [rowsPerPage, setRowsPerPage] = React.useState(15);
   const [page, setPage] = React.useState(1);
   const hasSearchFilter = Boolean(filterValue);
-
-  const [sortDescriptor, setSortDescriptor] = React.useState({
+  const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: "createdAt",
     direction: "ascending",
   });
@@ -39,7 +54,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
     return filteredRegisters;
   }, [tableData, hasSearchFilter, filterValue]);
 
-  const pages = Math.ceil(filteredItems.length / rowsPerPage);
+  const pages = filteredItems.length > 0 ? Math.ceil(filteredItems.length / rowsPerPage) : 1;
 
 
   const onNextPage = React.useCallback(() => {
@@ -62,25 +77,16 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
 
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a, b) => {
-      let first = ''
-      let second = ''
-      if (sortDescriptor.column == "value") {
-        first = Number(a[sortDescriptor.column]) as any
-        second = Number(b[sortDescriptor.column]) as any
-      } else {
-        first = a[sortDescriptor.column];
-        second = b[sortDescriptor.column];
-      }
+    return [...items].sort((a: any, b: any) => {
+      const first = sortDescriptor.column == "value" ? Number(a[sortDescriptor.column as keyof any]) as number : a[sortDescriptor.column as keyof any] as number;
+      const second = sortDescriptor.column == "value" ? Number(b[sortDescriptor.column as keyof any]) as number : b[sortDescriptor.column as keyof any] as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
 
-
-
-  const onRowsPerPageChange = React.useCallback((e: any) => {
+  const onRowsPerPageChange = React.useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
     setRowsPerPage(Number(e.target.value));
     setPage(1);
   }, []);
@@ -117,7 +123,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
 
   const topContent = React.useMemo(() => {
 
-    const handlerDelete = () => selectedKeys.size > 0 && setVisibleDelete(true);
+    const handlerDelete = () => (selectedKeys as any).size > 0 && setVisibleDelete(true);
 
     return (
       <div className="flex flex-col gap-4">
@@ -138,14 +144,14 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
               </div>
 
               <div className='flex grid content-center justify-center'>
-                {t('registerTable.confirmDelete')}
+                {t('confirmDelete')}
               </div>
               <div className='grid grid-cols-2 gap-5'>
                 <Button color="danger" onPress={closeHandlerDelete} type="submit">
-                  {t('registerTable.confirm')}
+                  {t('confirm')}
                 </Button>
                 <Button color="primary" onPress={closeHandlerDelete}>
-                  {t('registerTable.cancel')}
+                  {t('cancel')}
                 </Button>
               </div>
             </form>
@@ -175,12 +181,12 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
           <div className="flex gap-3">
             <div className="flex grid content-center justify-end">
               <Button color="warning" onPress={handlerDelete} endContent={<TrashIcon />}>
-                {t('registerTable.deleteValues')}
+                {t('deleteValues')}
               </Button>
             </div>
             <div className="flex grid content-center justify-end">
               <Button color="primary" onPress={handler} endContent={<PlusIcon />}>
-                {t('registerTable.addValue')}
+                {t('addValue')}
               </Button>
             </div>
 
@@ -211,9 +217,9 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
     return (
       <div className="py-2 px-2 flex justify-between items-center">
         <span className="w-[30%] text-small text-default-400">
-          {selectedKeys === "all" as any
-            ? t("allselected")
-            : `${selectedKeys.size} ` + t('of') + ` ${filteredItems.length} ` + t('selected')}
+          {selectedKeys === "all"
+            ? "All items selected"
+            : `${selectedKeys.size} of ${filteredItems.length} selected`}
         </span>
         <Pagination
           isCompact
@@ -223,18 +229,19 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
           page={page}
           total={pages}
           onChange={setPage}
+          initialPage={1}
         />
         <div className="hidden sm:flex w-[30%] justify-end gap-2">
           <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onPreviousPage}>
-            {t("previous")}
+            Previous
           </Button>
           <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onNextPage}>
-            {t("next")}
+            Next
           </Button>
         </div>
       </div>
     );
-  }, [selectedKeys, filteredItems.length, page, pages, onPreviousPage, t, onNextPage]);
+  }, [selectedKeys, filteredItems.length, page, pages, onPreviousPage, onNextPage]);
 
   const bodyContent = React.useMemo(() => {
 
@@ -247,15 +254,15 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
           <TableRow key={item.id}>
             {(columnKey) => item['type'] == 'despesa' ? (columnKey == 'createdAt' ?
 
-              <TableCell className="text-rose-500">{formatDate(getKeyValue(item, columnKey))}</TableCell> : columnKey == 'value' ?
+              <TableCell className="text-rose-500">{moment(new Date(getKeyValue(item, columnKey)).toISOString().split('T'), "YYYY/MM/DD").format(t('dateFormat'))}</TableCell> : columnKey == 'value' ?
                 <TableCell className="text-rose-500">{Number(getKeyValue(item, columnKey)).toLocaleString('pt-br', { style: "currency", currency: "BRL" })}</TableCell> :
-                columnKey == 'period' ? <TableCell className="text-rose-500">{t('registerTable.' + String(item.period == 'E' ? Periodicity.E : item.period == 'M' ? Periodicity.M : Periodicity.A))}</TableCell> :
+                columnKey == 'period' ? <TableCell className="text-rose-500">{t('' + String(item.period == 'E' ? Periodicity.E : item.period == 'M' ? Periodicity.M : Periodicity.A))}</TableCell> :
                   <TableCell className="text-rose-500">{getKeyValue(item, columnKey)}</TableCell>
             ) : (columnKey == 'createdAt' ?
 
-              <TableCell className="text-green-500">{formatDate(getKeyValue(item, columnKey))}</TableCell> : columnKey == 'value' ?
+              <TableCell className="text-green-500">{moment(new Date(getKeyValue(item, columnKey)).toISOString().split('T'), "YYYY/MM/DD").format(t('dateFormat'))}</TableCell> : columnKey == 'value' ?
                 <TableCell className="text-green-500">{Number(getKeyValue(item, columnKey)).toLocaleString('pt-br', { style: "currency", currency: "BRL" })}</TableCell> :
-                columnKey == 'period' ? (<TableCell className="text-green-500">{t('registerTable.' + String(item.period == 'E' ? Periodicity.E : item.period == 'M' ? Periodicity.M : Periodicity.A))}</TableCell>) :
+                columnKey == 'period' ? (<TableCell className="text-green-500">{t('' + String(item.period == 'E' ? Periodicity.E : item.period == 'M' ? Periodicity.M : Periodicity.A))}</TableCell>) :
                   <TableCell className="text-green-500">{getKeyValue(item, columnKey)}</TableCell>)
             }
           </TableRow>
@@ -268,6 +275,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
     <>
       <Table
         aria-label="Tabela contendo os registros do usuario"
+        isHeaderSticky
         selectionMode="multiple"
         selectedKeys={selectedKeys}
         onSelectionChange={setSelectedKeys as any}
@@ -283,12 +291,12 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
 
       >
         <TableHeader>
-          <TableColumn className="uppercase" key="name" allowsSorting>{t('registerTable.name')}</TableColumn>
-          <TableColumn className="uppercase" key="type" allowsSorting>{t('registerTable.type')}</TableColumn>
-          <TableColumn className="uppercase" key="category" allowsSorting>{t('registerTable.category')}</TableColumn>
-          <TableColumn className="uppercase" key="period" allowsSorting>{t('registerTable.period')}</TableColumn>
-          <TableColumn className="uppercase" key="value" allowsSorting>{t('registerTable.value')}</TableColumn>
-          <TableColumn className="uppercase" key="createdAt" allowsSorting>{t('registerTable.added')}</TableColumn>
+          <TableColumn className="uppercase" key="name" allowsSorting>{t('name')}</TableColumn>
+          <TableColumn className="uppercase" key="type" allowsSorting>{t('type')}</TableColumn>
+          <TableColumn className="uppercase" key="category" allowsSorting>{t('category')}</TableColumn>
+          <TableColumn className="uppercase" key="period" allowsSorting>{t('period')}</TableColumn>
+          <TableColumn className="uppercase" key="value" allowsSorting>{t('value')}</TableColumn>
+          <TableColumn className="uppercase" key="createdAt" allowsSorting>{t('added')}</TableColumn>
           <TableColumn className="uppercase" hidden>ID</TableColumn>
         </TableHeader>
 
