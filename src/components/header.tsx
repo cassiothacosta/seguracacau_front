@@ -29,7 +29,7 @@ export default function Header() {
         <ul>
           <li>
             <ThemeSwitcher />
-            <div className='lg:absolute'> 
+            <div className='lg:absolute max-sm:pb-3'> 
                 <Dropdown>
                   <DropdownTrigger>
                     <Button

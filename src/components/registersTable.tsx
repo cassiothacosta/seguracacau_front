@@ -222,7 +222,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
         <span className="w-[30%] text-small text-default-400">
           {selectedKeys === "all"
             ? "All items selected"
-            : `${selectedKeys.size} of ${filteredItems && filteredItems.length} selected`}
+            : `${selectedKeys.size} of ${filteredItems ? filteredItems.length : 0} selected`}
         </span>
         <Pagination
           isCompact

@@ -14,9 +14,6 @@ const options: Options = {
     }
 };
 
-
-
-
 const dateObj = {
     0: 'jan',
     1: 'feb',
@@ -63,7 +60,6 @@ const isUserUsingMobile = () => {
 const downloadPdf = () => {
     const target: any = document.getElementById("pdf-container")
 
-    
     if(!isUserUsingMobile()){
         target.className = 'light bg-background flex-auto rounded-lg'
         generatePDF(getTargetElement, options)
@@ -82,12 +78,15 @@ export default function ReportsPanel({ user, handlePageTitle }: any) {
 
     const { t } = useTranslation('common')
     const [data, setRegistros] = useState([] as any[])
+    const [showEmptyMessage, setshowEmptyMessage] = useState<Boolean>(false)
     let yearTotal = 0
 
 
     useEffect(() => {
         handlePageTitle(t('reportsPage'))
     })
+
+    
 
     async function carregaRelatorio() {
         const res = await fetch(apiLink + '/api/getRegistersByDate', {
@@ -99,6 +98,7 @@ export default function ReportsPanel({ user, handlePageTitle }: any) {
 
         const registros = await res.json()
         setRegistros(registros.data)
+        setshowEmptyMessage(true)
     }
 
     const [startDate, setStartDate] = useState(new Date());
@@ -123,7 +123,7 @@ export default function ReportsPanel({ user, handlePageTitle }: any) {
                     </div>
                 </div>
             </div>
-            {data.toString().includes('object') &&
+            {data.toString().includes('object') ?
                 <div id="pdf-container" className="light bg-background lg:flex-auto lg:h-32 max-sm:h-[800px] max-sm:w-screen rounded-lg">
                     <div className="p-10 overflow-y-scroll h-full max-sm:overflow-x-scroll max-sm:w-[1080px]">
                         <div className="text-black text-center text-2xl font-semibold">{t('registerReport') + ' - ' + moment(new Date(startDate).toISOString().split('T'), "YYYY/MM/DD").format("YYYY")}</div>
@@ -162,7 +162,15 @@ export default function ReportsPanel({ user, handlePageTitle }: any) {
                         <Spacer className="h-2" />
                         <div className="text-black grid place-items-end pr-4 font-semibold">{t('totalYear') + Number(yearTotal).toLocaleString('pt-br', { style: "currency", currency: "BRL" })}</div>
                     </div>
+                </div> :
+                 showEmptyMessage && 
+                
+                <div className="text-3xl text-center">
+                    Sem registros para o ano informado
                 </div>
+
+                
+                
             }
 
         </Card>

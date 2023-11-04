@@ -1,6 +1,6 @@
 import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
-import { Avatar, Card, Link, Listbox, ListboxItem } from '@nextui-org/react';
+import { Avatar, Card, Link, Listbox, ListboxItem, Spacer } from '@nextui-org/react';
 import Registers from '../components/register'
 import Login from './login';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -44,7 +44,11 @@ const handlePageTitle = (newTitle: String) => {
         <div className='lg:grid lg:grid-cols-12 max-sm:grid-cols-1 lg:gap-5 lg:w-[90%] lg:h-[90%]'>
           <div className='lg:grid lg:col-span-2 max-sm:pl-1 max-sm:pr-1 max-sm:pb-2'>
             <Card className="lg:flex gap-4 items-start p-10">
-              <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026708c" className="w-20 h-20 text-large" />
+              <div className='self-center'>
+              <Avatar src="/cocoa.png" className="w-[125px] h-[125px] text-large bg-green-400" />
+              <Spacer className='pt-3'/>
+              <div className='font-semibold '>{t('welcome2')+ ", " + user.username + "!"}</div>
+              </div>
               <Listbox 
                 aria-label="Listbox Variants"
                 color='default'
