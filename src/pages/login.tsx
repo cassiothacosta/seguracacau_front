@@ -49,8 +49,8 @@ const Login = () => {
   }
 
   return (
-    <div className='grid grid-cols-2 md:grid-cols-2 items-center w-full h-full rounded-sm shadow-lg'>
-      <div className='flex justify-center'>
+    <div className='grid md:grid-cols-2 items-center w-full h-full '>
+      <div className='flex justify-center max-sm:hidden'>
         <Image
           alt="Cocoa icons created by Vitaly Gorbachev - Flaticon"
           src="/cocoa.png"
@@ -58,12 +58,12 @@ const Login = () => {
         />
       </div>
       <div
-        className="flex justify-center col-span-1 w-full h-full items-center bg-background">
+        className="flex lg:justify-center lg:col-span-1 lg:w-full lg:h-full items-center bg-background max-sm:h-[70%] max-sm:w-[98%] max-sm:rounded-lg max-sm:place-self-center">
         <div className='grid grid-rows-3 w-[80%] h-[60%]'>
-          <div className='text-5xl row-span-1 text-foreground font-medium' suppressHydrationWarning >
+          <div className='text-5xl row-span-1 text-foreground font-medium max-sm:text-center' suppressHydrationWarning >
               {t('welcome')}
           </div>
-          <div className='flex row-span-2'>
+          <div className='flex row-span-2 max-sm:p-2'>
             <Form isLogin errorMessage={errorMsg} onSubmit={handleSubmit} />
           </div>
         </div>

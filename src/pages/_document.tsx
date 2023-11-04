@@ -7,11 +7,11 @@ export default function Document(this: any) {
     i18nextConfig.i18n.defaultLocale
     
   return (
-    <Html lang={currentLocale}>
+    <Html lang={currentLocale} className=''>
       <Head />
      
-      <body className='bg-background text-foreground'>
-        <Main />
+      <body className='bg-background text-foreground max-sm:absolute max-sm:bg-scroll'>
+        <Main/>
         <NextScript />
       </body>
     </Html>

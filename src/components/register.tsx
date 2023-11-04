@@ -140,8 +140,8 @@ export default function Registers({user, handlePageTitle}: any) {
 
 
   return (
-  <div className='grid grid-cols-8 gap-5'>
-    <Card className='col-span-6 p-5' >
+  <div className='grid lg:grid-cols-8 lg:gap-5 max-sm:gap-2 max-sm:pl-1 max-sm:pr-1'>
+    <Card className='lg:col-span-6 lg:p-5 '>
       <div className='grid w-[100%] h-[100%] '>
         <Modal closeButton
           aria-labelledby="modal-title"
@@ -154,7 +154,7 @@ export default function Registers({user, handlePageTitle}: any) {
         </Modal>
 
      
-          <div className='flex justify-items-center grid'>
+          <div className='lg:flex lg:justify-items-center lg:grid'>
             <div className='w-[100%] h-[100%] content-top'>
               <RegistersTable tableData={data} onSubmit={handleDeleteSubmit} onSubmitAdd={handleSubmit}/>
             </div>
@@ -162,7 +162,7 @@ export default function Registers({user, handlePageTitle}: any) {
       </div>
     </Card>
 
-    <Card className='grid col-span-2 pt-5'>
+    <Card className='lg:grid lg:col-span-2 pt-5 lg:justify-center'>
       <div className='text-center'>
         {t('graph1')}
         <RegistersByType username={user.username} changed={changed} setChanged={setChanged}/>

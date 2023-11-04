@@ -20,7 +20,7 @@ export default function Form({ isLogin, errorMessage, successMessage, onSubmit }
   return (
 
     <form onSubmit={onSubmit}>
-      <div className='bg-background p-10 pt-5 rounded-xl'>
+      <div className='bg-background lg:p-10 lg:pt-5 rounded-xl'>
         <div className="grid gap-8 flex w-96">
 
           <div className='text-center font-bold text-foreground'>{isLogin ? t('login') : t('signin')}</div>

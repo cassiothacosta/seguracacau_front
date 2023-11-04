@@ -1,19 +1,21 @@
-import { Table, 
-  TableHeader, 
-  TableBody, 
-  TableColumn, 
-  TableRow, 
-  TableCell, 
-  Button, 
-  getKeyValue, 
-  Pagination, 
-  Input, 
-  Modal, 
-  ModalContent, 
-  Select, 
-  Selection, 
-  SelectItem, 
-  SortDescriptor } from "@nextui-org/react";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableColumn,
+  TableRow,
+  TableCell,
+  Button,
+  getKeyValue,
+  Pagination,
+  Input,
+  Modal,
+  ModalContent,
+  Select,
+  Selection,
+  SelectItem,
+  SortDescriptor
+} from "@nextui-org/react";
 import { format, parseISO } from "date-fns";
 import { useTranslation } from "next-i18next";
 import React, { useEffect } from "react";
@@ -126,7 +128,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
     const handlerDelete = () => (selectedKeys as any).size > 0 && setVisibleDelete(true);
 
     return (
-      <div className="flex flex-col gap-4">
+      <div className="flex lg:flex-col gap-4 max-sm:p-4">
         <Modal closeButton
           aria-labelledby="modal-title"
           isOpen={visibleDelete}
@@ -168,17 +170,17 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
           </ModalContent>
         </Modal>
 
-        <div className="flex justify-between gap-3 items-end">
+        <div className="max-sm:flex max-sm:grid lg:justify-between lg:gap-3 lg:items-end">
           <Input
             isClearable
-            className="w-full sm:max-w-[44%]"
+            className="w-full sm:max-w-[44%] pb-3"
             placeholder="Busque pelo nome..."
             startContent={""}
             value={filterValue}
             onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
-          <div className="flex gap-3">
+          <div className="flex gap-2 pb-2">
             <div className="flex grid content-center justify-end">
               <Button color="warning" onPress={handlerDelete} endContent={<TrashIcon />}>
                 {t('deleteValues')}
@@ -192,23 +194,24 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
 
 
           </div>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total {sortedItems.length} {t("registers")}</span>
-          <label className="flex items-center text-default-400 text-small">
-            {t("rowsperpage")}
-            <select name="rowsperpage"
-              className="bg-transparent outline-none text-default-400 text-small"
-              onChange={onRowsPerPageChange}
-            >
-              <option value="15">15</option>
-              <option value="10">10</option>
-              <option value="5">5</option>
+          <div className="lg:flex justify-between items-center">
+            <span className="text-default-400 text-small">Total {sortedItems.length} {t("registers")}</span>
+            <label className="flex items-center text-default-400 text-small">
+              {t("rowsperpage")}
+              <select name="rowsperpage"
+                className="bg-transparent outline-none text-default-400 text-small"
+                onChange={onRowsPerPageChange}
+              >
+                <option value="15">15</option>
+                <option value="10">10</option>
+                <option value="5">5</option>
 
 
-            </select>
-          </label>
+              </select>
+            </label>
+          </div>
         </div>
+
       </div>
     );
   }, [visibleDelete, onSubmit, selectedKeys, t, visible, onSubmitAdd, filterValue, onSearchChange, sortedItems.length, onRowsPerPageChange, onClear]);
@@ -247,6 +250,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
 
     return (
       <TableBody
+        className="h-full overflow-x"
         emptyContent={"No registers found"}
         items={sortedItems}
       >
@@ -276,7 +280,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
       <Table
         aria-label="Tabela contendo os registros do usuario"
         isHeaderSticky
-        selectionMode="multiple"
+        selectionMode="multiple"    
         selectedKeys={selectedKeys}
         onSelectionChange={setSelectedKeys as any}
         bottomContent={bottomContent}
@@ -284,7 +288,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
         sortDescriptor={sortDescriptor as any}
         onSortChange={setSortDescriptor as any}
         classNames={{
-          wrapper: "max-h-full",
+          wrapper: "max-h-full max-sm:w-[412px]",
         }}
         topContent={topContent}
         topContentPlacement="outside"

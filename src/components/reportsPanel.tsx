@@ -10,9 +10,10 @@ import generatePDF, { Options } from "react-to-pdf";
 const options: Options = {
     filename: "using-function.pdf",
     page: {
-        margin: 20
+        margin: 25
     }
 };
+
 
 
 
@@ -33,12 +34,46 @@ const dateObj = {
 
 const getTargetElement = () => document.getElementById("pdf-container");
 
+const isUserUsingMobile = () => {
+
+    // User agent string method
+    let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    // Screen resolution method
+    if (!isMobile) {
+        let screenWidth = window.screen.width;
+        let screenHeight = window.screen.height;
+        isMobile = (screenWidth < 768 || screenHeight < 768);
+    }
+    
+    // Touch events method
+    if (!isMobile) {
+        isMobile = (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.maxTouchPoints > 0));
+    }
+    
+    // CSS media queries method
+    if (!isMobile) {
+        let bodyElement = document.getElementsByTagName('body')[0];
+        isMobile = window.getComputedStyle(bodyElement).getPropertyValue('content').indexOf('mobile') !== -1;
+    }
+    
+    return isMobile
+    }
+
 const downloadPdf = () => {
     const target: any = document.getElementById("pdf-container")
 
-    target.className = 'light bg-background flex-auto rounded-lg'
-    generatePDF(getTargetElement, options)
-    target.className = 'light bg-background flex-auto h-32 rounded-lg'
+    
+    if(!isUserUsingMobile()){
+        target.className = 'light bg-background flex-auto rounded-lg'
+        generatePDF(getTargetElement, options)
+        target.className = 'light bg-background flex-auto h-32 rounded-lg'
+    }else{
+        target.className = 'light bg-background flex-auto h-full w-[1080px] rounded-lg'
+        generatePDF(getTargetElement, options)
+        target.className = 'light bg-background flex-auto h-[600px] max-sm:w-screen rounded-lg'
+    }
+    
 }
 
 const apiLink = process.env.BACKEND_API
@@ -69,8 +104,8 @@ export default function ReportsPanel({ user, handlePageTitle }: any) {
     const [startDate, setStartDate] = useState(new Date());
 
     return (
-        <Card className="p-10 flex flex-col gap-4">
-            <div className="pb-10 flex justify-between gap-3 items-end">
+        <Card className="lg:p-10 lg:flex lg:flex-col lg:gap-4 max-sm:p-3 lg:h-full">
+            <div className="lg:pb-10 max-sm:pb-3 flex lg:justify-between gap-3 lg:items-end">
                 <div>{t('selectYear')}<Spacer />
                     <DatePicker className="p-1 rounded-lg"
                         selected={startDate}
@@ -79,14 +114,18 @@ export default function ReportsPanel({ user, handlePageTitle }: any) {
                         dateFormat="yyyy"
                     />
                 </div>
-                <div className="grid grid-cols-2 gap-5">
-                    <Button className="" onPress={carregaRelatorio}>{t('loadReport')}</Button>
-                    <Button className="" onClick={downloadPdf}>Download PDF</Button>
+                <div className="lg:grid lg:grid-cols-2  lg:gap-5">
+                    <div className="pb-2">
+                    <Button  onPress={carregaRelatorio}>{t('loadReport')}</Button>
+                    </div>
+                    <div className="">
+                    <Button onClick={downloadPdf}>Download PDF</Button>
+                    </div>
                 </div>
             </div>
             {data.toString().includes('object') &&
-                <div id="pdf-container" className="light bg-background flex-auto h-32 rounded-lg">
-                    <div className="p-10 overflow-y-scroll h-full ">
+                <div id="pdf-container" className="light bg-background lg:flex-auto lg:h-32 max-sm:h-[800px] max-sm:w-screen rounded-lg">
+                    <div className="p-10 overflow-y-scroll h-full max-sm:overflow-x-scroll max-sm:w-[1080px]">
                         <div className="text-black text-center text-2xl font-semibold">{t('registerReport') + ' - ' + moment(new Date(startDate).toISOString().split('T'), "YYYY/MM/DD").format("YYYY")}</div>
                         {
                             Object.keys(dateObj).map((key: any) => {

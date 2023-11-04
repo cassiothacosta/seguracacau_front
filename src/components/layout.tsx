@@ -7,7 +7,7 @@ export default function Layout(props: any) {
   <>
     <Header />
     {props.children && (
-      <div className="flex items-center justify-center h-screen"> {props.children}</div>
+      <div className="flex lg:items-center justify-center h-screen"> {props.children}</div>
     )
     }
   </>

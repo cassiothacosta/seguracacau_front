@@ -41,22 +41,22 @@ const handlePageTitle = (newTitle: String) => {
     <Layout>
       <title>{pageTitle}</title>
       {user ? (
-        <div className='grid grid-cols-12 gap-5 w-[90%] h-[90%]'>
-          <div className='grid col-span-2'>
-            <Card className="flex gap-4 items-start p-10">
+        <div className='lg:grid lg:grid-cols-12 max-sm:grid-cols-1 lg:gap-5 lg:w-[90%] lg:h-[90%]'>
+          <div className='lg:grid lg:col-span-2 max-sm:pl-1 max-sm:pr-1 max-sm:pb-2'>
+            <Card className="lg:flex gap-4 items-start p-10">
               <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026708c" className="w-20 h-20 text-large" />
               <Listbox 
                 aria-label="Listbox Variants"
                 color='default'
                 variant='light'
               >
-                <ListboxItem classNames={{title: "text-md"}} key="registers" color="default" onPress={handleOpenRegisters}>
+                <ListboxItem classNames={{title: "text-md"}} textValue={t('showTable')} key="registers" color="default" onPress={handleOpenRegisters}>
                   {t('showTable')}
                 </ListboxItem>
-                <ListboxItem classNames={{title: "text-md"}} key="reports"  color="default" onPress={handleOpenReports}>
+                <ListboxItem classNames={{title: "text-md"}} textValue={t('genReport')} key="reports"  color="default" onPress={handleOpenReports}>
                   {t('genReport')}
                 </ListboxItem>
-                <ListboxItem classNames={{title: "text-md"}} key="delete" className="text-danger" color="danger">
+                <ListboxItem classNames={{title: "text-md"}} textValue={t('genReport')} key="delete" className="text-danger" color="danger">
                   <Link color="danger" href={apiLink + "/api/logout"}>
                     {t('logout')}
                   </Link>
@@ -70,7 +70,9 @@ const handlePageTitle = (newTitle: String) => {
             }
             {
               visibleReports &&
+              <div className='max-sm:pl-1 max-sm:pr-1'>
                 <ReportsPanel user={user} handlePageTitle={handlePageTitle}/>
+              </div>
             }
 
           </div>

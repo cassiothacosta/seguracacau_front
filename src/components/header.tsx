@@ -29,7 +29,7 @@ export default function Header() {
         <ul>
           <li>
             <ThemeSwitcher />
-            <div className='absolute'> 
+            <div className='lg:absolute'> 
                 <Dropdown>
                   <DropdownTrigger>
                     <Button
@@ -50,9 +50,5 @@ export default function Header() {
       </nav>
     </header>
   )
-}
-
-function selectLocale(arg0: (location: any) => void) {
-  throw new Error('Function not implemented.')
 }
 
