@@ -1,125 +1,95 @@
 import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
-import Form from '../components/formRegister'
-import Table from '../components/registersTable'
-import { useState } from 'react'
-import Router from 'next/router'
+import { Avatar, Card, Link, Listbox, ListboxItem } from '@nextui-org/react';
+import Registers from '../components/register'
+import Login from './login';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next';
+import { useTranslation } from 'react-i18next'
+import { useEffect, useState } from 'react';
+import ReportsPanel from '@/components/reportsPanel';
 
 const apiLink = process.env.BACKEND_API
-  
-export default function Home() {
+
+export default function Home(props: any) {
+  const { t } = useTranslation('common')
   const user = useUser()
-  var tableData = null
-
   const [errorMsg, setErrorMsg] = useState('')
+  const [visibleRegisters, setVisibleRegisters] = useState(true)
+  const [visibleReports, setVisibleReports] = useState(false)
+  const [pageTitle, setPageTitle] = useState<String>("")
 
-  async function handleSubmit(e: Event & {
-    currentTarget: any
-  }) {
-   
-    e.preventDefault()
-    if (errorMsg) setErrorMsg('')
+  useEffect(() => {
+    setPageTitle(t('startPage'))
+  }, [t])
 
-    const body = {
-      username: user.username,
-      name: e.currentTarget.name.value,
-      type: e.currentTarget.type.value,
-      category:e.currentTarget.category.value,
-      period:e.currentTarget.period.value,
-      value:e.currentTarget.value.value,
-    }
+  const handleOpenReports = () => {
+    setVisibleRegisters(false);
+    setVisibleReports(true)
+  };
 
-    try {
-      const res = await fetch(apiLink + '/api/addRegister', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify(body),
-        credentials: 'include'
-      })
-      if (res.status === 200) {
-        Router.push('/')
-      } else {
-        throw new Error(await res.text())
-      }
-    } catch (error: any) {
-      console.error('An unexpected error happened occurred:', error)
-      setErrorMsg(error.message)
-    }
-  }
+  const handleOpenRegisters = () => {
+    setVisibleRegisters(true);
+    setVisibleReports(false)
+  };
 
-  async function getRegisters(e: Event & {
-    currentTarget: any}
-    ) {
-
-      e.preventDefault()
-      if (errorMsg) setErrorMsg('')
-
-      const body = {
-      username: user.username
-    }
-
-    try {
-      const res = await fetch(apiLink + '/api/getRegisters', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify(body),
-        credentials: 'include'
-      })
-      if (res.status === 200) {
-
-      } else {
-        throw new Error(await res.text())
-      }
-    } catch (error: any) {
-      console.error('An unexpected error happened occurred:', error)
-      setErrorMsg(error.message)
-    }
-  }
-
-
+const handlePageTitle = (newTitle: String) => {
+  setPageTitle(newTitle)
+}
+  
   return (
-      <Layout>
-        <h1>Passport.js Example</h1>
+    <Layout>
+      <title>{pageTitle}</title>
+      {user ? (
+        <div className='grid grid-cols-12 gap-5 w-[90%] h-[90%]'>
+          <div className='grid col-span-2'>
+            <Card className="flex gap-4 items-start p-10">
+              <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026708c" className="w-20 h-20 text-large" />
+              <Listbox 
+                aria-label="Listbox Variants"
+                color='default'
+                variant='light'
+              >
+                <ListboxItem classNames={{title: "text-md"}} key="registers" color="default" onPress={handleOpenRegisters}>
+                  {t('showTable')}
+                </ListboxItem>
+                <ListboxItem classNames={{title: "text-md"}} key="reports"  color="default" onPress={handleOpenReports}>
+                  {t('genReport')}
+                </ListboxItem>
+                <ListboxItem classNames={{title: "text-md"}} key="delete" className="text-danger" color="danger">
+                  <Link color="danger" href={apiLink + "/api/logout"}>
+                    {t('logout')}
+                  </Link>
+                </ListboxItem>
+              </Listbox>
+            </Card>
+          </div>
+          <div className='grid col-span-10'>
+            {visibleRegisters &&
+                <Registers user={user} handlePageTitle={handlePageTitle}/>
+            }
+            {
+              visibleReports &&
+                <ReportsPanel user={user} handlePageTitle={handlePageTitle}/>
+            }
 
-        <p>Steps to test the example:</p>
+          </div>
+        </div>
+      ) :
 
-        <ol>
-          <li>Click Login and enter a username and password.</li>
-          <li>
-            You`&apos;`ll be redirected to Home. Click on Profile, notice how your
-            session is being used through a token stored in a cookie.
-          </li>
-          <li>
-            Click Logout and try to go to Profile again. You`&apos;`ll get redirected to
-            Login.
-          </li>
-        </ol>
+        <Login />
 
-        {user && (
-          <>
-            <p >Currently logged in as:</p>
-            <pre>{JSON.stringify(user, null, 2)}</pre>
+      }
+    </Layout>
 
-            <div>
-              <Form errorMessage={errorMsg} onSubmit={handleSubmit}/>
-              
-            </div>
-            <div className='tableRegisters'></div>
-             
- 
-          </>
+  )
+}
 
-        )}
-
-        <style jsx>{`
-          li {
-            margin-bottom: 0.5rem;
-          }
-          pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-          }
-        `}</style>
-      </Layout>
-    )
-  }
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale as any, [
+      'common'
+    ])),
+    // Will be passed to the page component as props
+  },
+})

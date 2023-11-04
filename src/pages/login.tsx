@@ -1,13 +1,17 @@
 import { useState } from 'react'
-import Router from 'next/router'
+import Router, { useRouter } from 'next/router'
 import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
 import Form from '../components/form'
-
+import { Image } from '@nextui-org/react'
+import { useTranslation } from 'react-i18next'
 
 const apiLink = process.env.BACKEND_API
 
 const Login = () => {
+  const { t } = useTranslation('common')
+  const { asPath } = useRouter()
+
   useUser({ redirectTo: '/', redirectIfFound: true })
   const [errorMsg, setErrorMsg] = useState('')
 
@@ -26,12 +30,15 @@ const Login = () => {
     try {
       const res = await fetch(apiLink + '/api/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
         credentials: 'include'
       })
       if (res.status === 200) {
-        Router.push('/')
+        Router.push('/').then(() => {
+          asPath == '/' && Router.reload()
+        })
+
       } else {
         throw new Error(await res.text())
       }
@@ -42,20 +49,26 @@ const Login = () => {
   }
 
   return (
-    <Layout>
-      <div className="login">
-        <Form isLogin errorMessage={errorMsg} onSubmit={handleSubmit} />
+    <div className='grid grid-cols-2 md:grid-cols-2 items-center w-full h-full rounded-sm shadow-lg'>
+      <div className='flex justify-center'>
+        <Image
+          alt="Cocoa icons created by Vitaly Gorbachev - Flaticon"
+          src="/cocoa.png"
+
+        />
       </div>
-      <style jsx>{`
-        .login {
-          max-width: 21rem;
-          margin: 0 auto;
-          padding: 1rem;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-        }
-      `}</style>
-    </Layout>
+      <div
+        className="flex justify-center col-span-1 w-full h-full items-center bg-background">
+        <div className='grid grid-rows-3 w-[80%] h-[60%]'>
+          <div className='text-5xl row-span-1 text-foreground font-medium' suppressHydrationWarning >
+              {t('welcome')}
+          </div>
+          <div className='flex row-span-2'>
+            <Form isLogin errorMessage={errorMsg} onSubmit={handleSubmit} />
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
