@@ -1,19 +1,54 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Input, Button, ModalFooter, Select, SelectItem, ModalHeader } from '@nextui-org/react'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from "next-i18next";
 
-enum periodicity  {
+enum periodicity {
   ESPORADICO = 'E',
   MENSAL = 'M',
   ANUAL = 'A'
+
 }
 
+const apiLink = process.env.BACKEND_API
 
+const defaultCategories = [
+  { name: "casa" },
+  { name: "compras" },
+  { name: "telefone" },
+  { name: "ferias" }
+]
 
-export default function FormRegister({ onSubmit }: any) {
+export default function FormRegister({ onSubmit, username }: any) {
   const { t } = useTranslation('common')
   const [selectedType, setSelectedType] = useState(new Set(["despesa"]));
+  const [data, setCategorias] = useState(defaultCategories as any[])
+
+  async function carregaCategorias() {
+    const res = await fetch(apiLink + '/api/getCategories', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: username }),
+      credentials: 'include'
+    })
+
+    const categorias = await res.json()
+    setCategorias(defaultCategories + categorias.data)
+  }
+
+  useEffect(() => {
+    async function carregaCategorias() {
+      const res = await fetch(apiLink + '/api/getCategories', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: username }),
+        credentials: 'include'
+      })
+      const categorias = await res.json()
+      setCategorias([...defaultCategories , ...categorias.data])
+    }
+    carregaCategorias()
+  }, [username])
 
   React.useMemo(
     () => Array.from(selectedType).join(", ").replaceAll("_", " "),
@@ -72,41 +107,35 @@ export default function FormRegister({ onSubmit }: any) {
       </Select>
 
       <Select
-        label= {t('chooseCategory')}
-        placeholder= {t('house')}
+        label={t('chooseCategory')}
+        placeholder={t('house')}
         defaultSelectedKeys={["casa"]}
         className="max-w-xs"
+        items={...data}
         name="category"
       >
-        <SelectItem key="casa" value="casa">
-        {t('house')}
-        </SelectItem>
-        <SelectItem key="compras" value="compras">
-        {t('expenses')}
-        </SelectItem>
-        <SelectItem key="telefone" value="telefone">
-        {t('phone')}
-        </SelectItem>
-        <SelectItem key="ferias" value="ferias">
-        {t('vacations')}
-        </SelectItem>
+        {(item: any) => (
+          <SelectItem key={item.name} value={item.name}>
+            {item.name}
+          </SelectItem>
+        )}
       </Select>
 
       <Select
-        label= {t('choosePeriod')}
-        placeholder= {t('sporadic')}
+        label={t('choosePeriod')}
+        placeholder={t('sporadic')}
         defaultSelectedKeys={[periodicity.ESPORADICO]}
         className="max-w-xs"
         name="period"
       >
-        <SelectItem  key={periodicity.ESPORADICO}>
-        {t('sporadic')}
+        <SelectItem key={periodicity.ESPORADICO}>
+          {t('sporadic')}
         </SelectItem>
-        <SelectItem  key={periodicity.MENSAL}>
-        {t('montly')}
+        <SelectItem key={periodicity.MENSAL}>
+          {t('montly')}
         </SelectItem>
-        <SelectItem  key={periodicity.ANUAL}>
-        {t('yearly')}
+        <SelectItem key={periodicity.ANUAL}>
+          {t('yearly')}
         </SelectItem>
       </Select>
 
@@ -132,8 +161,8 @@ export default function FormRegister({ onSubmit }: any) {
       />
 
       <ModalFooter>
-        <Button  type="submit" color='primary'>
-        {t('send')}
+        <Button type="submit" color='primary'>
+          {t('send')}
         </Button>
       </ModalFooter>
     </form>

@@ -4,6 +4,8 @@
     "signupPage": "Segura Cacau - Sign Up",
     "registersPage": "Segura Cacau - Registers Table",
     "reportsPage": "Segura Cacau - Reports",
+    "categoriesPage": "Segura Cacau - Categories",
+    "categories": "Categories",
     "login" : "Sign in",
     "signin" : "Create account",
     "logout": "Logout",
@@ -29,6 +31,8 @@
     "loadReport": "Load Report",
     "genReport": "Yearly Report",
     "showTable": "Registers Table",
+    "showCategories": "Manage Categories",
+    "seachByName": "Search by name ...",
     "typeName": "Type the name",
     "name": "Name",
     "type": "Type",
@@ -36,7 +40,7 @@
     "value": "Value",
     "period": "Periodicity",
     "added": "Added",
-    "addValue": "Add Register",
+    "addValue": "Add New",
     "chooseType": "Choose the type",
     "debit":"Debit",
     "credit": "Credit",
@@ -76,5 +80,6 @@
     "dateFormat": "MM/DD/YYYY",
     "totalMonth": "Month Total: ",
     "totalYear": "Year Total: ",
-    "registerReport": "Registers Report"
+    "registerReport": "Registers Report",
+    "addCategory": "Add Category"
   }

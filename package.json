@@ -17,7 +17,6 @@
     "@types/passport-local": "^1.0.35",
     "@types/uuid": "^9.0.0",
     "cookie": "^0.5.0",
-    "date-fns": "^2.30.0",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.3",
     "flag-icons": "^6.11.1",

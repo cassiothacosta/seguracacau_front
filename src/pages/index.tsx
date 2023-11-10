@@ -8,15 +8,16 @@ import { GetStaticProps } from 'next';
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react';
 import ReportsPanel from '@/components/reportsPanel';
+import CategoriesPanel from '@/components/categoriesPanel';
 
 const apiLink = process.env.BACKEND_API
 
 export default function Home(props: any) {
   const { t } = useTranslation('common')
   const user = useUser()
-  const [errorMsg, setErrorMsg] = useState('')
   const [visibleRegisters, setVisibleRegisters] = useState(true)
   const [visibleReports, setVisibleReports] = useState(false)
+  const [visibleCategories, setVisibleCategories] = useState(false)
   const [pageTitle, setPageTitle] = useState<String>("")
 
   useEffect(() => {
@@ -26,17 +27,25 @@ export default function Home(props: any) {
   const handleOpenReports = () => {
     setVisibleRegisters(false);
     setVisibleReports(true)
+    setVisibleCategories(false);
   };
 
   const handleOpenRegisters = () => {
     setVisibleRegisters(true);
     setVisibleReports(false)
+    setVisibleCategories(false);
   };
 
-const handlePageTitle = (newTitle: String) => {
-  setPageTitle(newTitle)
-}
-  
+  const handleOpenCategories = () => {
+    setVisibleCategories(true);
+    setVisibleRegisters(false);
+    setVisibleReports(false)
+  }
+
+  const handlePageTitle = (newTitle: String) => {
+    setPageTitle(newTitle)
+  }
+
   return (
     <Layout>
       <title>{pageTitle}</title>
@@ -45,22 +54,26 @@ const handlePageTitle = (newTitle: String) => {
           <div className='lg:grid lg:col-span-2 max-sm:pl-1 max-sm:pr-1 max-sm:pb-2'>
             <Card className="lg:flex gap-4 items-start p-10">
               <div className='self-center'>
-              <Avatar src="/cocoa.png" className="w-[125px] h-[125px] text-large bg-green-400" />
-              <Spacer className='pt-3'/>
-              <div className='font-semibold '>{t('welcome2')+ ", " + user.username + "!"}</div>
+                <Avatar src="/cocoa.png" className="w-[125px] h-[125px] text-large bg-green-400" />
+                <Spacer className='pt-3' />
+                <div className='font-semibold '>{t('welcome2') + ", " + user.username + "!"}</div>
               </div>
-              <Listbox 
+              <Listbox
                 aria-label="Listbox Variants"
                 color='default'
                 variant='light'
               >
-                <ListboxItem classNames={{title: "text-md"}} textValue={t('showTable')} key="registers" color="default" onPress={handleOpenRegisters}>
+                <ListboxItem classNames={{ title: "text-md" }} textValue={t('showTable')} key="registers" color="default" onPress={handleOpenRegisters}>
                   {t('showTable')}
                 </ListboxItem>
-                <ListboxItem classNames={{title: "text-md"}} textValue={t('genReport')} key="reports"  color="default" onPress={handleOpenReports}>
+                <ListboxItem classNames={{ title: "text-md" }} textValue={t('genReport')} key="categories" color="default" onPress={handleOpenCategories}>
+                  {t('showCategories')}
+                </ListboxItem>
+                <ListboxItem classNames={{ title: "text-md" }} textValue={t('genReport')} key="reports" color="default" onPress={handleOpenReports}>
                   {t('genReport')}
                 </ListboxItem>
-                <ListboxItem classNames={{title: "text-md"}} textValue={t('genReport')} key="delete" className="text-danger" color="danger">
+                
+                <ListboxItem classNames={{ title: "text-md" }} textValue={t('genReport')} key="delete" className="text-danger" color="danger">
                   <Link color="danger" href={apiLink + "/api/logout"}>
                     {t('logout')}
                   </Link>
@@ -70,13 +83,19 @@ const handlePageTitle = (newTitle: String) => {
           </div>
           <div className='grid col-span-10'>
             {visibleRegisters &&
-                <Registers user={user} handlePageTitle={handlePageTitle}/>
+              <Registers user={user} handlePageTitle={handlePageTitle} />
             }
             {
               visibleReports &&
               <div className='max-sm:pl-1 max-sm:pr-1'>
-                <ReportsPanel user={user} handlePageTitle={handlePageTitle}/>
+                <ReportsPanel user={user} handlePageTitle={handlePageTitle} />
               </div>
+            }
+            {
+              visibleCategories &&
+              <Card className='p-5'>
+                <CategoriesPanel user={user} handlePageTitle={handlePageTitle} />
+              </Card>
             }
 
           </div>

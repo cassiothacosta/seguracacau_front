@@ -156,7 +156,7 @@ export default function Registers({user, handlePageTitle}: any) {
      
           <div className='lg:flex lg:justify-items-center lg:grid'>
             <div className='w-[100%] h-[100%] content-top'>
-              <RegistersTable tableData={data} onSubmit={handleDeleteSubmit} onSubmitAdd={handleSubmit}/>
+              <RegistersTable tableData={data} onSubmit={handleDeleteSubmit} onSubmitAdd={handleSubmit} username={user.username}/>
             </div>
           </div>
       </div>

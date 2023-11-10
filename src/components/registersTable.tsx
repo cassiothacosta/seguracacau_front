@@ -15,23 +15,17 @@ import {
   Selection,
   SelectItem,
   SortDescriptor
+  
 } from "@nextui-org/react";
-import { format, parseISO } from "date-fns";
 import { useTranslation } from "next-i18next";
-import React, { useEffect } from "react";
+import React from "react";
 import { TrashIcon } from "./TrashIcon"
 import { Periodicity } from "./enums"
 import { PlusIcon } from "./PlusIcon";
 import Form from './formRegister'
 import moment from "moment";
 
-
-function formatDate(dateString: any) {
-  const date = parseISO(dateString);
-  return <time dateTime={dateString}>{format(date, 'LLLL d, yyyy')}</time>;
-}
-
-export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any) {
+export default function RegistersTable({ tableData, onSubmit, onSubmitAdd, username }: any) {
 
   const { t } = useTranslation('common')
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]));
@@ -55,6 +49,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
 
     return filteredRegisters;
   }, [tableData, hasSearchFilter, filterValue]);
+  
 
   const pages = filteredItems && filteredItems.length > 0 ? Math.ceil(filteredItems.length / rowsPerPage) : 1;
 
@@ -122,7 +117,6 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
     console.log("closed");
   };
 
-
   const topContent = React.useMemo(() => {
 
     const handlerDelete = () => (selectedKeys as any).size > 0 && setVisibleDelete(true);
@@ -166,7 +160,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
           onOpenChange={closeHandler}>
 
           <ModalContent>
-            <Form onSubmit={onSubmitAdd} />
+            <Form onSubmit={onSubmitAdd} username={username} />
           </ModalContent>
         </Modal>
 
@@ -174,7 +168,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
           <Input
             isClearable
             className="w-full sm:max-w-[44%] pb-3"
-            placeholder="Busque pelo nome..."
+            placeholder={t('seachByName')}
             startContent={""}
             value={filterValue}
             onClear={() => onClear()}
@@ -205,8 +199,6 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
                 <option value="15">15</option>
                 <option value="10">10</option>
                 <option value="5">5</option>
-
-
               </select>
             </label>
           </div>
@@ -214,7 +206,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
 
       </div>
     );
-  }, [visibleDelete, onSubmit, selectedKeys, t, visible, onSubmitAdd, filterValue, onSearchChange, sortedItems, onRowsPerPageChange, onClear]);
+  }, [visibleDelete, onSubmit, selectedKeys, t, visible, onSubmitAdd, username, filterValue, onSearchChange, sortedItems, onRowsPerPageChange, onClear]);
 
   const bottomContent = React.useMemo(() => {
     return (
@@ -222,7 +214,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
         <span className="w-[30%] text-small text-default-400">
           {selectedKeys === "all"
             ? "All items selected"
-            : `${selectedKeys.size} of ${filteredItems ? filteredItems.length : 0} selected`}
+            : `${selectedKeys.size} ` + t('of') + ` ${filteredItems ? filteredItems.length : 0} ` + t('selected')}
         </span>
         <Pagination
           isCompact
@@ -236,15 +228,15 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd }: any
         />
         <div className="hidden sm:flex w-[30%] justify-end gap-2">
           <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onPreviousPage}>
-            Previous
+            {t('previous')}
           </Button>
           <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onNextPage}>
-            Next
+            {t('next')}
           </Button>
         </div>
       </div>
     );
-  }, [selectedKeys, filteredItems, page, pages, onPreviousPage, onNextPage]);
+  }, [selectedKeys, t, filteredItems, page, pages, onPreviousPage, onNextPage]);
 
   const bodyContent = React.useMemo(() => {
 
