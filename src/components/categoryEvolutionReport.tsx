@@ -19,7 +19,7 @@ import { useTranslation } from "next-i18next";
 import { SearchIcon } from "./SearchIcon";
 import DatePicker from "react-datepicker";
 import generatePDF, { Options } from "react-to-pdf";
-import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LabelList } from 'recharts';
 
 
 
@@ -203,13 +203,13 @@ const dateObj = new Object({
     const target: any = document.getElementById("pdf-container")
 
     if (!isUserUsingMobile()) {
-      target.className = 'light bg-background flex-auto rounded-lg'
+      target.className = 'ml-2 mr-2 light bg-background lg:flex-auto lg:h-full lg:w-[1080px] max-sm:h-[1080px] max-sm:w-screen rounded-lg'
       generatePDF(getTargetElement, options)
-      target.className = 'light bg-background lg:flex-auto lg:h-[350px] max-sm:h-[800px] max-sm:w-screen rounded-lg'
+      target.className = 'lg:ml-2 lg:mr-2 light bg-background lg:flex-auto lg:h-[820px] lg:w-[700px] max-sm:h-[630px] max-sm:w-full rounded-lg'
     } else {
-      target.className = 'light bg-background flex-auto h-full w-[1080px] rounded-lg'
+      target.className = 'light bg-background flex-auto h-fit w-[1080px] rounded-lg'
       generatePDF(getTargetElement, options)
-      target.className = 'light bg-background flex-auto h-[600px] max-sm:w-screen rounded-lg'
+      target.className = 'lg:ml-2 lg:mr-2 light bg-background lg:flex-auto lg:h-[820px] lg:w-[700px] max-sm:h-[630px] max-sm:w-full rounded-lg'
     }
 
   }
@@ -232,17 +232,17 @@ const dateObj = new Object({
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
-        <div className="flex justify-between gap-3 items-end">
+        <div className="lg:flex justify-between gap-3 items-end">
           <Input
             isClearable
-            className="w-full sm:max-w-[44%]"
+            className="w-full sm:max-w-[44%] max-sm:pb-2"
             placeholder={t('seachByName')}
             startContent={<SearchIcon />}
             value={filterValue}
             onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
-          <div className='flex grid-cols-3 gap-3'>
+          <div className='lg:flex lg:grid-cols-3 max-sm:grid gap-3'>
 
             <DatePicker className="p-1 rounded-lg"
               selected={startDate}
@@ -296,6 +296,20 @@ const dateObj = new Object({
     );
   };
 
+  
+const renderCustomizedLabel = (props: { x: any; y: any; width: any; height: any; value: any; }) => {
+  const { x, y, width, height, value } = props;
+  const radius = 10;
+
+  return (
+    <g>
+      <text x={x + width / 2} y={y - radius} textAnchor="middle" dominantBaseline="middle" className="o">
+        {value}
+      </text>
+    </g>
+  );
+};
+
   const bottomContent = React.useMemo(() => {
     return (
       <div className="py-2 px-2 flex justify-between items-center">
@@ -326,7 +340,7 @@ const dateObj = new Object({
   }, [selectedKeys, filteredItems.length, page, pages, onPreviousPage, onNextPage]);
 
   return (
-    <div>
+    <div className="lg:grid lg:grid-cols-2">
       <Table
         aria-label="Example table with custom cells, pagination and sorting"
         isHeaderSticky
@@ -354,8 +368,8 @@ const dateObj = new Object({
       </Table>
 
       {valores.toString().includes('object') ?
-        <div id="pdf-container" className="light bg-background lg:flex-auto lg:h-[350px] max-sm:h-[800px] max-sm:w-screen rounded-lg">
-          <div className="p-10 overflow-y-scroll h-full max-sm:overflow-x-scroll max-sm:w-[1080px]">
+        <div id="pdf-container" className="lg:ml-2 lg:mr-2 light bg-background lg:flex-auto lg:h-[820px] lg:w-[700px] max-sm:h-[630px] max-sm:w-full rounded-lg">
+          <div className="grid p-10 overflow-y-scroll h-full lg:w-full overflow-x-scroll max-sm:w-[full] justify-self-center">
             <div className="text-black text-center text-2xl font-semibold">{t('categoryEvol') + ' - ' + startDate.getFullYear()}</div>
             <div className="flex-rows">
               {Object.keys(Array.from(selectedKeys)).map((key, value) => (
@@ -363,15 +377,13 @@ const dateObj = new Object({
 
                   <div key={key}>
                     <div className="text-black text-center capitalize p-10 text-xl">{Array.from(selectedKeys)[value] as any}</div>
-                    <div className="flex justify-center">
+                    <div className="">
                       <BarChart
-                        width={1200}
+                        width={800}
                         height={400}
                         data={valores[value]}
                         margin={{
-                          top: 5,
-                          right: 30,
-                          left: 20,
+                          top: 50,
                           bottom: 50,
                         }}
                         className=""
@@ -379,8 +391,9 @@ const dateObj = new Object({
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name" tick={<CustomizedAxisTick />} />
                         <YAxis />
-                        <Tooltip />
-                        <Bar dataKey="value" fill="#8884d8" activeBar={<Rectangle fill="pink" stroke="blue" />} />
+                        <Bar dataKey="value" fill="#8884d8" activeBar={<Rectangle fill="pink" stroke="blue" />} >
+                          <LabelList dataKey="value" content={renderCustomizedLabel as any} />
+                        </Bar>
                       </BarChart>
                     </div>
                   </div>

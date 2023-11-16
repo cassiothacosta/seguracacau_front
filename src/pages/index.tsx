@@ -96,7 +96,7 @@ export default function Home(props: any) {
               </Listbox>
             </Card>
           </div>
-          <div className='grid col-span-10'>
+          <div className='grid col-span-10 max-sm:pr-1 max-sm:pl-1' >
             {visibleRegisters &&
               <Registers user={user} handlePageTitle={handlePageTitle} />
             }
