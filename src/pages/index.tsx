@@ -7,8 +7,9 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next';
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react';
-import ReportsPanel from '@/components/reportsPanel';
+import YearlyReport from '@/components/yearlyReport';
 import CategoriesPanel from '@/components/categoriesPanel';
+import CategoryEvolutionReport from '@/components/categoryEvolutionReport';
 
 const apiLink = process.env.BACKEND_API
 
@@ -16,7 +17,8 @@ export default function Home(props: any) {
   const { t } = useTranslation('common')
   const user = useUser()
   const [visibleRegisters, setVisibleRegisters] = useState(true)
-  const [visibleReports, setVisibleReports] = useState(false)
+  const [visibleYearlyReport, setVisibleReports] = useState(false)
+  const [visibleEvolutionReport, setVisibleEvolutionReport] = useState(false)
   const [visibleCategories, setVisibleCategories] = useState(false)
   const [pageTitle, setPageTitle] = useState<String>("")
 
@@ -28,18 +30,28 @@ export default function Home(props: any) {
     setVisibleRegisters(false);
     setVisibleReports(true)
     setVisibleCategories(false);
+    setVisibleEvolutionReport(false);
   };
 
   const handleOpenRegisters = () => {
     setVisibleRegisters(true);
     setVisibleReports(false)
     setVisibleCategories(false);
+    setVisibleEvolutionReport(false);
   };
 
   const handleOpenCategories = () => {
     setVisibleCategories(true);
     setVisibleRegisters(false);
+    setVisibleReports(false);
+    setVisibleEvolutionReport(false);
+  }
+
+  const handleOpenEvolution = () => {
+    setVisibleCategories(false);
+    setVisibleRegisters(false);
     setVisibleReports(false)
+    setVisibleEvolutionReport(true);
   }
 
   const handlePageTitle = (newTitle: String) => {
@@ -72,6 +84,9 @@ export default function Home(props: any) {
                 <ListboxItem classNames={{ title: "text-md" }} textValue={t('genReport')} key="reports" color="default" onPress={handleOpenReports}>
                   {t('genReport')}
                 </ListboxItem>
+                <ListboxItem classNames={{ title: "text-md" }} textValue={t('genEvolReport')} key="Evolreport" color="default" onPress={handleOpenEvolution}>
+                  {t('genEvolReport')}
+                </ListboxItem>
                 
                 <ListboxItem classNames={{ title: "text-md" }} textValue={t('genReport')} key="delete" className="text-danger" color="danger">
                   <Link color="danger" href={apiLink + "/api/logout"}>
@@ -86,15 +101,21 @@ export default function Home(props: any) {
               <Registers user={user} handlePageTitle={handlePageTitle} />
             }
             {
-              visibleReports &&
+              visibleYearlyReport &&
               <div className='max-sm:pl-1 max-sm:pr-1'>
-                <ReportsPanel user={user} handlePageTitle={handlePageTitle} />
+                <YearlyReport user={user} handlePageTitle={handlePageTitle} />
               </div>
             }
             {
               visibleCategories &&
               <Card className='p-5'>
                 <CategoriesPanel user={user} handlePageTitle={handlePageTitle} />
+              </Card>
+            }
+            {
+              visibleEvolutionReport &&
+              <Card className='p-5'>
+                <CategoryEvolutionReport user={user} handlePageTitle={handlePageTitle} />
               </Card>
             }
 

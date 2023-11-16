@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { Input, Button, ModalFooter, ModalHeader } from '@nextui-org/react'
 import React from 'react';
 import { useTranslation } from "next-i18next";
