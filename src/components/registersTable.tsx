@@ -43,12 +43,15 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd, usern
 
     if (hasSearchFilter) {
       filteredRegisters = filteredRegisters.filter((register: any) =>
-        register.name.toLowerCase().includes(filterValue.toLowerCase()),
+        register.name.toLowerCase().includes(filterValue.toLowerCase())  || register.type.toLowerCase().includes(filterValue.toLowerCase())
+        || register.category.toLowerCase().includes(filterValue.toLowerCase()) || t(Periodicity[register.period as keyof object]).toLowerCase().includes(filterValue.toLowerCase())
+        || moment(new Date(register.createdAt).toISOString().split('T'), "YYYY/MM/DD").format(t('dateFormat')).includes(filterValue)
+        ,
       );
     }
 
     return filteredRegisters;
-  }, [tableData, hasSearchFilter, filterValue]);
+  }, [t, tableData, hasSearchFilter, filterValue]);
   
 
   const pages = filteredItems && filteredItems.length > 0 ? Math.ceil(filteredItems.length / rowsPerPage) : 1;
@@ -168,7 +171,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd, usern
           <Input
             isClearable
             className="w-full sm:max-w-[44%] pb-3"
-            placeholder={t('seachByName')}
+            placeholder={t('searchByRegister')}
             startContent={""}
             value={filterValue}
             onClear={() => onClear()}

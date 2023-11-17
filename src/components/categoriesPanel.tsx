@@ -313,7 +313,7 @@ export default function CategoriesPanel({ user, handlePageTitle }: any) {
           <Input
             isClearable
             className="w-full sm:max-w-[44%]"
-            placeholder={t('seachByName')}
+            placeholder={t('searchByRegister')}
             startContent={<SearchIcon />}
             value={filterValue}
             onClear={() => onClear()}

@@ -236,7 +236,7 @@ const dateObj = new Object({
           <Input
             isClearable
             className="w-full sm:max-w-[44%] max-sm:pb-2"
-            placeholder={t('seachByName')}
+            placeholder={t('searchByRegister')}
             startContent={<SearchIcon />}
             value={filterValue}
             onClear={() => onClear()}

@@ -25,7 +25,7 @@ export default function RegistersByCategory({username, changed, setChanged}: any
 
     carregaRegistros()
   }, [username])
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#e11d48', '#2dd4bf', '#facc15', '#ccfbf1'];
 
   async function carregaRegistros() {
     const res = await fetch(apiLink + '/api/getRegistersGroupByCategory', {
