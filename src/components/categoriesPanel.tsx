@@ -204,7 +204,7 @@ export default function CategoriesPanel({ user, handlePageTitle }: any) {
     let filteredCategories = [...data];
 
     if (hasSearchFilter) {
-      filteredCategories = filteredCategories.filter((category) =>
+      filteredCategories = filteredCategories && filteredCategories.filter((category) =>
       category.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }

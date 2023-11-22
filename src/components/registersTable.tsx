@@ -14,8 +14,9 @@ import {
   Select,
   Selection,
   SelectItem,
-  SortDescriptor
-  
+  SortDescriptor,
+  Spacer
+
 } from "@nextui-org/react";
 import { useTranslation } from "next-i18next";
 import React from "react";
@@ -24,8 +25,9 @@ import { Periodicity } from "./enums"
 import { PlusIcon } from "./PlusIcon";
 import Form from './formRegister'
 import moment from "moment";
+import DatePicker from "react-datepicker";
 
-export default function RegistersTable({ tableData, onSubmit, onSubmitAdd, username }: any) {
+export default function RegistersTable({ tableData, onSubmit, onSubmitAdd, username, startDate, setStartDate }: any) {
 
   const { t } = useTranslation('common')
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]));
@@ -33,6 +35,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd, usern
   const [rowsPerPage, setRowsPerPage] = React.useState(15);
   const [page, setPage] = React.useState(1);
   const hasSearchFilter = Boolean(filterValue);
+
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: "createdAt",
     direction: "ascending",
@@ -42,8 +45,8 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd, usern
     let filteredRegisters = tableData;
 
     if (hasSearchFilter) {
-      filteredRegisters = filteredRegisters.filter((register: any) =>
-        register.name.toLowerCase().includes(filterValue.toLowerCase())  || register.type.toLowerCase().includes(filterValue.toLowerCase())
+      filteredRegisters = filteredRegisters && filteredRegisters.filter((register: any) =>
+        register.name.toLowerCase().includes(filterValue.toLowerCase()) || register.type.toLowerCase().includes(filterValue.toLowerCase())
         || register.category.toLowerCase().includes(filterValue.toLowerCase()) || t(Periodicity[register.period as keyof object]).toLowerCase().includes(filterValue.toLowerCase())
         || moment(new Date(register.createdAt).toISOString().split('T'), "YYYY/MM/DD").format(t('dateFormat')).includes(filterValue)
         ,
@@ -52,7 +55,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd, usern
 
     return filteredRegisters;
   }, [t, tableData, hasSearchFilter, filterValue]);
-  
+
 
   const pages = filteredItems && filteredItems.length > 0 ? Math.ceil(filteredItems.length / rowsPerPage) : 1;
 
@@ -163,34 +166,47 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd, usern
           onOpenChange={closeHandler}>
 
           <ModalContent>
-            <Form onSubmit={onSubmitAdd} username={username} />
+            <Form onSubmit={onSubmitAdd} username={username} tableDate={startDate} />
           </ModalContent>
         </Modal>
 
-        <div className="max-sm:flex max-sm:grid lg:justify-between lg:gap-3 lg:items-end">
-          <Input
-            isClearable
-            className="w-full sm:max-w-[44%] pb-3"
-            placeholder={t('searchByRegister')}
-            startContent={""}
-            value={filterValue}
-            onClear={() => onClear()}
-            onValueChange={onSearchChange}
-          />
-          <div className="flex gap-2 pb-2">
-            <div className="flex grid content-center justify-end">
-              <Button color="warning" onPress={handlerDelete} endContent={<TrashIcon />}>
-                {t('deleteValues')}
-              </Button>
-            </div>
-            <div className="flex grid content-center justify-end">
-              <Button color="primary" onPress={handler} endContent={<PlusIcon />}>
-                {t('addValue')}
-              </Button>
+        <div className="max-sm:flex max-sm:grid lg:gap-3 lg:items-end">
+          <div className="lg:flex lg:justify-between pb-3">
+            <Input
+              isClearable
+              className="lg:w-full sm:max-w-[44%] max-sm:pb-3"
+              placeholder={t('searchByRegister')}
+              startContent={""}
+              value={filterValue}
+              onClear={() => onClear()}
+              onValueChange={onSearchChange}
+            />
+            <div className="flex justify-end gap-3">
+              <div className="content-center place-self-center">
+                <Button color="warning" onPress={handlerDelete} endContent={<TrashIcon />}>
+                  {t('deleteValues')}
+                </Button>
+              </div>
+              <div className="content-center place-self-center">
+                <Button color="primary" onPress={handler} endContent={<PlusIcon />}>
+                  {t('addValue')}
+                </Button>
+              </div>
             </div>
 
 
           </div>
+
+          <div className="flex-auto grid pb-3">{t('selectPeriod')}
+            <DatePicker className="p-1 rounded-lg"
+              selected={startDate}
+              onChange={(date) => setStartDate(date as any)}
+              showMonthYearPicker
+              dateFormat="MM/yyyy"
+            />
+          </div>
+
+
           <div className="lg:flex justify-between items-center">
             <span className="text-default-400 text-small">Total {sortedItems ? sortedItems.length : 0} {t("registers")}</span>
             <label className="flex items-center text-default-400 text-small">
@@ -209,11 +225,11 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd, usern
 
       </div>
     );
-  }, [visibleDelete, onSubmit, selectedKeys, t, visible, onSubmitAdd, username, filterValue, onSearchChange, sortedItems, onRowsPerPageChange, onClear]);
+  }, [visibleDelete, onSubmit, selectedKeys, t, visible, onSubmitAdd, username, startDate, filterValue, onSearchChange, sortedItems, onRowsPerPageChange, onClear, setStartDate]);
 
   const bottomContent = React.useMemo(() => {
     return (
-      <div className="py-2 px-2 flex justify-between items-center">
+      <div className="py-2 px-2 flex lg:justify-between items-center">
         <span className="w-[30%] text-small text-default-400">
           {selectedKeys === "all"
             ? "All items selected"
@@ -256,13 +272,15 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd, usern
               <TableCell className="text-rose-500">{moment(new Date(getKeyValue(item, columnKey)).toISOString().split('T'), "YYYY/MM/DD").format(t('dateFormat'))}</TableCell> : columnKey == 'value' ?
                 <TableCell className="text-rose-500">{Number(getKeyValue(item, columnKey)).toLocaleString('pt-br', { style: "currency", currency: "BRL" })}</TableCell> :
                 columnKey == 'period' ? <TableCell className="text-rose-500">{t('' + String(item.period == 'E' ? Periodicity.E : item.period == 'M' ? Periodicity.M : Periodicity.A))}</TableCell> :
-                  <TableCell className="text-rose-500">{getKeyValue(item, columnKey)}</TableCell>
+                  columnKey == 'removedAt' ? (<TableCell className="text-rose-500">{getKeyValue(item, columnKey) ? moment(new Date(getKeyValue(item, columnKey)).toISOString().split('T'), "YYYY/MM/DD").format(t('dateFormat')) : '-'}</TableCell>) :
+                    (<TableCell className="text-rose-500">{getKeyValue(item, columnKey)}</TableCell>)
             ) : (columnKey == 'createdAt' ?
 
               <TableCell className="text-green-500">{moment(new Date(getKeyValue(item, columnKey)).toISOString().split('T'), "YYYY/MM/DD").format(t('dateFormat'))}</TableCell> : columnKey == 'value' ?
                 <TableCell className="text-green-500">{Number(getKeyValue(item, columnKey)).toLocaleString('pt-br', { style: "currency", currency: "BRL" })}</TableCell> :
                 columnKey == 'period' ? (<TableCell className="text-green-500">{t('' + String(item.period == 'E' ? Periodicity.E : item.period == 'M' ? Periodicity.M : Periodicity.A))}</TableCell>) :
-                  <TableCell className="text-green-500">{getKeyValue(item, columnKey)}</TableCell>)
+                  columnKey == 'removedAt' ? (<TableCell className="text-green-500">{getKeyValue(item, columnKey) ? moment(new Date(getKeyValue(item, columnKey)).toISOString().split('T'), "YYYY/MM/DD").format(t('dateFormat')) : '-'}</TableCell>) :
+                    (<TableCell className="text-green-500">{getKeyValue(item, columnKey)}</TableCell>))
             }
           </TableRow>
         )}
@@ -275,7 +293,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd, usern
       <Table
         aria-label="Tabela contendo os registros do usuario"
         isHeaderSticky
-        selectionMode="multiple"    
+        selectionMode="multiple"
         selectedKeys={selectedKeys}
         onSelectionChange={setSelectedKeys as any}
         bottomContent={bottomContent}
@@ -284,6 +302,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd, usern
         onSortChange={setSortDescriptor as any}
         classNames={{
           wrapper: "max-h-full max-sm:w-[412px]",
+
         }}
         topContent={topContent}
         topContentPlacement="outside"
@@ -296,6 +315,7 @@ export default function RegistersTable({ tableData, onSubmit, onSubmitAdd, usern
           <TableColumn className="uppercase" key="period" allowsSorting>{t('period')}</TableColumn>
           <TableColumn className="uppercase" key="value" allowsSorting>{t('value')}</TableColumn>
           <TableColumn className="uppercase" key="createdAt" allowsSorting>{t('added')}</TableColumn>
+          <TableColumn className="uppercase" key="removedAt" allowsSorting>{t('removed')}</TableColumn>
           <TableColumn className="uppercase" hidden>ID</TableColumn>
         </TableHeader>
 

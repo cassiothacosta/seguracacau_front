@@ -5,17 +5,18 @@ import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 
 const apiLink = process.env.BACKEND_API
 
-export default function RegistersByCategory({username, changed, setChanged}: any) {
+export default function RegistersByCategory({username, changed, setChanged, registersDate}: any) {
 
   const [data, setRegistros] = useState([])
   const emptyData = [{ name: 'Empty', value: 1 }, { name: 'Empty', value: 2 }, { name: 'Empty', value: 3 }]
 
   useEffect(() => {
+    setTimeout(() => {
     async function carregaRegistros() {
       const res = await fetch(apiLink + '/api/getRegistersGroupByCategory', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: username }),
+        body: JSON.stringify({ username: username, registersDate: registersDate }),
         credentials: 'include'
       })
 
@@ -24,14 +25,18 @@ export default function RegistersByCategory({username, changed, setChanged}: any
     }
 
     carregaRegistros()
-  }, [username])
+    setTimeout(() => {
+      setChanged(false)
+    }, 20)
+  }, 100)
+  }, [registersDate, setChanged, username])
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#e11d48', '#2dd4bf', '#facc15', '#ccfbf1'];
 
   async function carregaRegistros() {
     const res = await fetch(apiLink + '/api/getRegistersGroupByCategory', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: username }),
+      body: JSON.stringify({ username: username, registersDate: registersDate }),
       credentials: 'include'
     })
 

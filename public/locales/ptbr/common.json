@@ -83,5 +83,7 @@
     "totalMonth": "Total do Mês: ",
     "totalYear": "Total do Ano: ",
     "registerReport": "Relatório de Registros",
-    "addCategory": "Adicionar Categoria"
+    "addCategory": "Adicionar Categoria",
+    "selectPeriod": "Selecione o período: ",
+    "removed": "removido"
   }

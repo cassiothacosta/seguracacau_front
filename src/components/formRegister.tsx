@@ -1,6 +1,7 @@
 import { Input, Button, ModalFooter, Select, SelectItem, ModalHeader } from '@nextui-org/react'
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from "next-i18next";
+import DatePicker from "react-datepicker";
 
 enum periodicity {
   ESPORADICO = 'E',
@@ -18,22 +19,11 @@ const defaultCategories = [
   { name: "ferias" }
 ]
 
-export default function FormRegister({ onSubmit, username }: any) {
+export default function FormRegister({ onSubmit, username, tableDate }: any) {
   const { t } = useTranslation('common')
   const [selectedType, setSelectedType] = useState(new Set(["despesa"]));
   const [data, setCategorias] = useState(defaultCategories as any[])
-
-  async function carregaCategorias() {
-    const res = await fetch(apiLink + '/api/getCategories', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: username }),
-      credentials: 'include'
-    })
-
-    const categorias = await res.json()
-    setCategorias(defaultCategories + categorias.data)
-  }
+  const [startDate, setStartDate] = React.useState(new Date(tableDate));
 
   useEffect(() => {
     async function carregaCategorias() {
@@ -44,7 +34,7 @@ export default function FormRegister({ onSubmit, username }: any) {
         credentials: 'include'
       })
       const categorias = await res.json()
-      setCategorias([...defaultCategories , ...categorias.data])
+      setCategorias([...defaultCategories, ...categorias.data])
     }
     carregaCategorias()
   }, [username])
@@ -89,6 +79,17 @@ export default function FormRegister({ onSubmit, username }: any) {
         placeholder={t('name')}
         labelPlacement="outside"
       />
+      <div className='flex-auto grid justify-start'>
+        {t('selectPeriod')}
+
+        <DatePicker className="p-1 rounded-lg"
+          selected={startDate}
+          onChange={(date) => setStartDate(date as any)}
+          showMonthYearPicker
+          dateFormat="MM/yyyy"
+          name="registerDate"
+        />
+      </div>
 
       <Select
         label={t('chooseType')}

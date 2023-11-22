@@ -5,7 +5,7 @@ import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 
 const apiLink = process.env.BACKEND_API
 
-export default function RegistersByType({ username, changed, setChanged }: any) {
+export default function RegistersByType({ username, changed, setChanged, registersDate }: any) {
 
   const [data, setRegistros] = useState([])
   const emptyData = [{ name: 'Empty', value: 1 }, { name: 'Empty', value: 2 }, { name: 'Empty', value: 3 }]
@@ -31,7 +31,7 @@ export default function RegistersByType({ username, changed, setChanged }: any) 
         const res = await fetch(apiLink + '/api/getRegistersGroupByType', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: username }),
+          body: JSON.stringify({ username: username, registersDate: registersDate }),
           credentials: 'include'
         })
 
@@ -46,10 +46,9 @@ export default function RegistersByType({ username, changed, setChanged }: any) 
     }, 100)
 
 
-  }, [setChanged, username])
+  }, [registersDate, setChanged, username])
 
   const COLORS = ['#FA4343', '#0088FE'];
-
 
   if (changed) {
     carregaRegistros()

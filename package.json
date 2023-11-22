@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@hapi/iron": "^7.0.1",
-    "@nextui-org/react": "^2.1.13",
+    "@nextui-org/react": "^2.2.9",
     "@react-stately/data": "^3.10.3",
     "@types/cookie": "^0.5.0",
     "@types/node": "^18.15.11",

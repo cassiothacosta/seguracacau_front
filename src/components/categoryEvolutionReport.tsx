@@ -113,7 +113,7 @@ const dateObj = new Object({
     let filteredCategories = [...data];
 
     if (hasSearchFilter) {
-      filteredCategories = filteredCategories.filter((category) =>
+      filteredCategories = filteredCategories && filteredCategories.filter((category) =>
         category.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
