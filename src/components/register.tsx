@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useTranslation } from "next-i18next";
 import RegistersByCategory from './registerByCategory'
 import RegistersByType from './registerByType'
+import moment from 'moment'
 
 
 const apiLink = process.env.BACKEND_API
@@ -25,6 +26,8 @@ export default function Registers({user, handlePageTitle}: any) {
 
   const [changed, setChanged] = React.useState(false);
   const handler = () => setVisible(true);
+  const [startDate, setStartDate] = React.useState(new Date());
+
 
 
   const closeHandler = () => {
@@ -37,7 +40,7 @@ export default function Registers({user, handlePageTitle}: any) {
       const res = await fetch(apiLink + '/api/getRegisters', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: user.username }),
+        body: JSON.stringify({ username: user.username, date: startDate }),
         credentials: 'include'
       })
 
@@ -46,13 +49,13 @@ export default function Registers({user, handlePageTitle}: any) {
     }
     handlePageTitle(t('registersPage'))
     carregaRegistros()
-  }, [handlePageTitle, t, user.username])
+  }, [handlePageTitle, startDate, t, user.username])
 
   async function carregaRegistros() {
     const res = await fetch(apiLink + '/api/getRegisters', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: user.username }),
+      body: JSON.stringify({ username: user.username, date: startDate }),
       credentials: 'include'
     })
 
@@ -72,7 +75,6 @@ export default function Registers({user, handlePageTitle}: any) {
     if (errorMsg) setErrorMsg('')
     if (successMessage) setSuccessMsg('')
 
-    console.log(e.currentTarget)
     const body = {
       username: user.username,
       name: e.currentTarget.elements.name.value,
@@ -80,6 +82,7 @@ export default function Registers({user, handlePageTitle}: any) {
       category: e.currentTarget.elements.category.value,
       period: e.currentTarget.elements.period.value,
       value: e.currentTarget.elements.value.value,
+      registerDate: e.currentTarget.elements.registerDate.value
     }
     try {
       await addRegisters({ body }).then((response: any) => {
@@ -114,7 +117,8 @@ export default function Registers({user, handlePageTitle}: any) {
     for (const item in e.currentTarget.selectedKeys.options) selectValues.push(e.currentTarget.selectedKeys.options[item].value)
     const body = {
       username: user.username,
-      selectedKeys: selectValues
+      selectedKeys: selectValues,
+      registersDate: moment(new Date(startDate).toISOString().split('T'), "YYYY/MM/DD").format('YYYY/MM/DD')
     }
 
     try {
@@ -140,8 +144,8 @@ export default function Registers({user, handlePageTitle}: any) {
 
 
   return (
-  <div className='grid grid-cols-8 gap-5'>
-    <Card className='col-span-6 p-5' >
+  <div className='grid lg:grid-cols-8 lg:gap-5 max-sm:gap-2 max-sm:pl-1 max-sm:pr-1'>
+    <Card className='lg:col-span-6 lg:p-5 '>
       <div className='grid w-[100%] h-[100%] '>
         <Modal closeButton
           aria-labelledby="modal-title"
@@ -154,22 +158,22 @@ export default function Registers({user, handlePageTitle}: any) {
         </Modal>
 
      
-          <div className='flex justify-items-center grid'>
+          <div className='lg:flex lg:justify-items-center lg:grid'>
             <div className='w-[100%] h-[100%] content-top'>
-              <RegistersTable tableData={data} onSubmit={handleDeleteSubmit} onSubmitAdd={handleSubmit}/>
+              <RegistersTable tableData={data} onSubmit={handleDeleteSubmit} onSubmitAdd={handleSubmit} username={user.username} startDate={startDate} setStartDate={setStartDate}/>
             </div>
           </div>
       </div>
     </Card>
 
-    <Card className='grid col-span-2 pt-5'>
+    <Card className='lg:grid lg:col-span-2 pt-5 lg:justify-center'>
       <div className='text-center'>
         {t('graph1')}
-        <RegistersByType username={user.username} changed={changed} setChanged={setChanged}/>
+        <RegistersByType username={user.username} changed={changed} setChanged={setChanged}  registersDate={startDate}/>
       </div>
       <div className='text-center'>
         {t('graph2')}
-        <RegistersByCategory username={user.username} changed={changed} setChanged={setChanged}/>
+        <RegistersByCategory username={user.username} changed={changed} setChanged={setChanged} registersDate={startDate}/>
       </div>
 
     </Card>

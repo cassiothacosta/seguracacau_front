@@ -1,12 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react'
-import Router from 'next/router'
 import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 
 
 const apiLink = process.env.BACKEND_API
 
-export default function RegistersByType ({username, changed, setChanged}: any) {
+export default function RegistersByType({ username, changed, setChanged, registersDate }: any) {
 
   const [data, setRegistros] = useState([])
   const emptyData = [{ name: 'Empty', value: 1 }, { name: 'Empty', value: 2 }, { name: 'Empty', value: 3 }]
@@ -27,29 +26,35 @@ export default function RegistersByType ({username, changed, setChanged}: any) {
   }
 
   useEffect(() => {
-    async function carregaRegistros() {
-      const res = await fetch(apiLink + '/api/getRegistersGroupByType', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: username }),
-        credentials: 'include'
-      })
+    setTimeout(() => {
+      async function carregaRegistros() {
+        const res = await fetch(apiLink + '/api/getRegistersGroupByType', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: username, registersDate: registersDate }),
+          credentials: 'include'
+        })
 
-      const registros = await res.json()
-      setRegistros(registros.data)
-    }
+        const registros = await res.json()
+        setRegistros(registros.data)
+      }
 
-    carregaRegistros()
-    
-  }, [username])
+      carregaRegistros()
+      setTimeout(() => {
+        setChanged(false)
+      }, 20)
+    }, 100)
+
+
+  }, [registersDate, setChanged, username])
+
   const COLORS = ['#FA4343', '#0088FE'];
 
- 
-if(changed){
-  carregaRegistros()
-  setChanged(false)
-}
-  
+  if (changed) {
+    carregaRegistros()
+
+  }
+
 
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }: any) => {
@@ -66,7 +71,7 @@ if(changed){
 
   return (
     <>
-      {data[0] ? (
+      {data && data[0] ? (
         <div className='flex grid place-content-center'>
           <PieChart width={400} height={400}>
             <Pie
@@ -79,33 +84,33 @@ if(changed){
               fill="#8884d8"
               dataKey="value"
             >
-              {data.map((entry, index) => (
+              {data && data.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
-            <Tooltip/>
+            <Tooltip />
           </PieChart>
         </div>
       ) : (
         <div >
-        <PieChart width={400} height={400}>
-          <Pie
-            data={emptyData}
-            cx="50%"
-            cy="50%"
-            labelLine={false}
-            label={renderCustomizedLabel}
-            outerRadius={80}
-            fill="#8884d8"
-            dataKey="value"
-          >
-            {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
-          <Tooltip />
-        </PieChart>
-      </div>
+          <PieChart width={400} height={400}>
+            <Pie
+              data={emptyData}
+              cx="50%"
+              cy="50%"
+              labelLine={false}
+              label={renderCustomizedLabel}
+              outerRadius={80}
+              fill="#8884d8"
+              dataKey="value"
+            >
+              {emptyData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip />
+          </PieChart>
+        </div>
       )
       }
     </>

@@ -5,17 +5,18 @@ import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 
 const apiLink = process.env.BACKEND_API
 
-export default function RegistersByCategory({username, changed, setChanged}: any) {
+export default function RegistersByCategory({username, changed, setChanged, registersDate}: any) {
 
   const [data, setRegistros] = useState([])
   const emptyData = [{ name: 'Empty', value: 1 }, { name: 'Empty', value: 2 }, { name: 'Empty', value: 3 }]
 
   useEffect(() => {
+    setTimeout(() => {
     async function carregaRegistros() {
       const res = await fetch(apiLink + '/api/getRegistersGroupByCategory', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: username }),
+        body: JSON.stringify({ username: username, registersDate: registersDate }),
         credentials: 'include'
       })
 
@@ -24,14 +25,18 @@ export default function RegistersByCategory({username, changed, setChanged}: any
     }
 
     carregaRegistros()
-  }, [username])
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+    setTimeout(() => {
+      setChanged(false)
+    }, 20)
+  }, 100)
+  }, [registersDate, setChanged, username])
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#e11d48', '#2dd4bf', '#facc15', '#ccfbf1'];
 
   async function carregaRegistros() {
     const res = await fetch(apiLink + '/api/getRegistersGroupByCategory', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: username }),
+      body: JSON.stringify({ username: username, registersDate: registersDate }),
       credentials: 'include'
     })
 
@@ -61,7 +66,7 @@ export default function RegistersByCategory({username, changed, setChanged}: any
 
   return (
     <>
-      { data[0] ? (
+      {data && data[0] ? (
         <div className='flex grid place-content-center'>
           <PieChart width={400} height={400}>
             <Pie
@@ -74,7 +79,7 @@ export default function RegistersByCategory({username, changed, setChanged}: any
               fill="#8884d8"
               dataKey="value"
             >
-              {data.map((entry, index) => (
+              {data && data.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
@@ -94,7 +99,7 @@ export default function RegistersByCategory({username, changed, setChanged}: any
               fill="#8884d8"
               dataKey="value"
             >
-              {data.map((entry, index) => (
+              {emptyData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
