@@ -25,12 +25,12 @@ export default function Form({ isLogin, errorMessage, successMessage, onSubmit }
 
           <div className='text-center font-bold text-foreground'>{isLogin ? t('login') : t('signin')}</div>
 
-          <Input placeholder={t('user')} aria-label="username" type="text" name="username" required />
+          <Input label={t('user')} aria-label="username" type="text" name="username" isRequired />
 
-          <Input placeholder={t('password')} aria-label="password" type="password" name="password" required />
+          <Input label={t('password')} aria-label="password" type="password" name="password" isRequired />
 
           {!isLogin && (
-            <Input placeholder={t('rpassword')} aria-label="rpassword" type="password" name="rpassword" required />
+            <Input label={t('rpassword')} aria-label="rpassword" type="password" name="rpassword" isRequired />
           )}
 
           <div className="submit">
