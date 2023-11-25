@@ -27,7 +27,7 @@ export default function RegistersByCategory({username, changed, setChanged, regi
     carregaRegistros()
     setTimeout(() => {
       setChanged(false)
-    }, 20)
+    }, 50)
   }, 100)
   }, [registersDate, setChanged, username])
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#e11d48', '#2dd4bf', '#facc15', '#ccfbf1'];
@@ -44,7 +44,7 @@ export default function RegistersByCategory({username, changed, setChanged, regi
     setRegistros(registros.data)
     setTimeout(() => {
       setChanged(false)
-    }, 20)
+    }, 50)
   }
 
   if(changed){

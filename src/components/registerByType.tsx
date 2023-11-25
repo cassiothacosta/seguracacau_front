@@ -14,7 +14,7 @@ export default function RegistersByType({ username, changed, setChanged, registe
     const res = await fetch(apiLink + '/api/getRegistersGroupByType', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: username }),
+      body: JSON.stringify({ username: username, registersDate: registersDate }),
       credentials: 'include'
     })
 
@@ -22,7 +22,7 @@ export default function RegistersByType({ username, changed, setChanged, registe
     setRegistros(registros.data)
     setTimeout(() => {
       setChanged(false)
-    }, 20)
+    }, 50)
   }
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function RegistersByType({ username, changed, setChanged, registe
       carregaRegistros()
       setTimeout(() => {
         setChanged(false)
-      }, 20)
+      }, 50)
     }, 100)
 
 

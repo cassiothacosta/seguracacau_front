@@ -90,8 +90,8 @@ export default function Registers({user, handlePageTitle}: any) {
           setSuccessMsg(t('sucessMsg'))
           setTimeout(() => {
             notifySuccess(successMessage)
+            carregaRegistros()
           }, 100)
-          carregaRegistros()
           setChanged(true)
         } else {
           setErrorMsg(t('errorMsg') + response.text())
