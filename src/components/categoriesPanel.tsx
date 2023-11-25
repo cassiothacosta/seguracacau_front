@@ -97,6 +97,7 @@ export default function CategoriesPanel({ user, handlePageTitle }: any) {
 
   useEffect(() => {
       handlePageTitle(t('reportsPage'))
+      setTimeout(() => {
       async function carregaCategorias() {
         const res = await fetch(apiLink + '/api/getCategories', {
             method: 'POST',
@@ -108,6 +109,7 @@ export default function CategoriesPanel({ user, handlePageTitle }: any) {
         setCategorias(categorias.data)
     }
     carregaCategorias()
+  }, 50)
   }, [user])
 
   const handleVisibleModal = () => {
@@ -151,7 +153,9 @@ export default function CategoriesPanel({ user, handlePageTitle }: any) {
       await addCategory({ body }).then((response: any) => {
         if (response.status == 200) {
           setSuccessMsg(t('sucessMsg'))
-          carregaCategorias()
+          setTimeout(() =>{
+            carregaCategorias()
+          }, 50)
         } else {
           setErrorMsg(t('errorMsg') + response.text())
           throw new Error(response.text())
